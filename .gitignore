@@ -47,7 +47,8 @@ ExportedObj/
 *.opendb
 *.VC.db
 
-# Unity3D generated meta files
+# Unity3D generated meta files (important to include)
+# Do NOT exclude these files, as Unity uses them to track assets
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
@@ -55,7 +56,7 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
-# Builds
+# Builds (do not track build files like APK, AAB, UnityPackages)
 *.apk
 *.aab
 *.unitypackage
