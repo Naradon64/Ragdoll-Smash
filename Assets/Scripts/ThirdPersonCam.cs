@@ -23,6 +23,9 @@ public class ThirdPersonCam : MonoBehaviour
 
     void Update()
     {
+        Vector3 viewDir = Player.position - new Vector3(transform.position.x, Player.position.y, transform.position.z);
+        Orientation.forward = viewDir.normalized;
+
         // Get input for movement
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
@@ -39,16 +42,16 @@ public class ThirdPersonCam : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Move the player based on input and camera direction
-        MovePlayer();
+        // // Move the player based on input and camera direction
+        // MovePlayer();
     }
 
-    private void MovePlayer()
-    {
-        // Move the player based on the calculated direction
-        if (inputDir != Vector3.zero)
-        {
-            rb.MovePosition(rb.position + inputDir.normalized * moveSpeed * Time.deltaTime);
-        }
-    }
+    // private void MovePlayer()
+    // {
+    //     // Move the player based on the calculated direction
+    //     if (inputDir != Vector3.zero)
+    //     {
+    //         rb.MovePosition(rb.position + inputDir.normalized * moveSpeed * Time.deltaTime);
+    //     }
+    // }
 }

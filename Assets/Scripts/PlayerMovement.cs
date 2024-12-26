@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float drag = 4f;  // Drag when grounded
     public float airDrag = 0.1f;  // Drag when in the air (lower value)
     public float jumpForce = 10f;  // Force applied when jumping
+    public Transform orientation;
 
     private float horizontalInput;
     private float verticalInput;
@@ -58,6 +59,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        // Create a movement vector relative to the camera
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
+        // Apply movement force to the Rigidbody
+        rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+
         // Get the camera's forward and right direction
         Vector3 forward = Camera.main.transform.forward;
         Vector3 right = Camera.main.transform.right;
@@ -69,12 +76,6 @@ public class PlayerMovement : MonoBehaviour
         // Normalize the directions so the player doesn't move faster diagonally
         forward.Normalize();
         right.Normalize();
-
-        // Create a movement vector relative to the camera
-        moveDirection = forward * verticalInput + right * horizontalInput;
-
-        // Apply movement force to the Rigidbody
-        rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
 
         // Adjust drag based on whether the player is grounded or not
         if (isGrounded)
