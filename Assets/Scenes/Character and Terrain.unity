@@ -1128,6 +1128,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 51aa9437fc5ddf943930cb659b20dc5e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1487020091}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 51aa9437fc5ddf943930cb659b20dc5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1487020092}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 51aa9437fc5ddf943930cb659b20dc5e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1487020093}
   m_SourcePrefab: {fileID: 100100000, guid: 51aa9437fc5ddf943930cb659b20dc5e, type: 3}
 --- !u!4 &704514537 stripped
 Transform:
@@ -1520,8 +1526,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handler:
     _Editor_SelectedChain: 0
-    _Editor_ChainCategory: 2
-    _EditorCategory: 1
+    _Editor_ChainCategory: 1
+    _EditorCategory: 3
     _EditorMainCategory: 1
     _EditorMotionCategory: 0
     m_hemi: {fileID: -2508796484986968503, guid: 44d994eaad14fdf49a2dd378b4d62094, type: 3}
@@ -1754,7 +1760,7 @@ MonoBehaviour:
         LocalUp: {x: 0, y: 1, z: 0}
         LocalForward: {x: 0, y: 0, z: 1}
         ToBase: {x: 0, y: 0, z: 0}
-        _EditorCollFoldout: 1
+        _EditorCollFoldout: 0
         _EditorCollPosSliders: 0
         _EditorBoxCollSliders: 0
         _EditorMeshCollSliders: 0
@@ -1849,14 +1855,14 @@ MonoBehaviour:
           OtherReference: {fileID: 0}
           RotationCorrection: {x: 0, y: 0, z: 0}
           ColliderExtraTransform: {fileID: 0}
-        MassMultiplier: 0.06
+        MassMultiplier: 0.005806452
         ForceMultiplier: 1
         MusclesBoost: 0
         MainAxis: 0
         TargetMainAxis: {x: 1, y: 0, z: 0}
         InverseMainAxis: 1
-        MainAxisLowLimit: -5.5
-        MainAxisHighLimit: 17.5
+        MainAxisLowLimit: -6
+        MainAxisHighLimit: 18
         SecondaryAxis: 1
         TargetSecondaryAxis: {x: 0, y: 1, z: 0}
         InverseSecondaryAxis: 0
@@ -1884,13 +1890,13 @@ MonoBehaviour:
         LocalUp: {x: 0, y: 1, z: 0}
         LocalForward: {x: 0, y: 0, z: 1}
         ToBase: {x: 0, y: 0, z: 0}
-        _EditorCollFoldout: 0
+        _EditorCollFoldout: 1
         _EditorCollPosSliders: 0
         _EditorBoxCollSliders: 0
         _EditorMeshCollSliders: 0
         _EditorRadiusSliders: 1
         _EditorMaxSliderValue: 0.5
-        _EditorMainAxisPreview: 1
+        _EditorMainAxisPreview: 0
         _EditorSecondAxisPreview: 0
         _EditorThirdPreview: 0
         StoredReferencePose:
@@ -2979,6 +2985,40 @@ CapsuleCollider:
   m_Height: 1.8221931
   m_Direction: 1
   m_Center: {x: 0, y: 0.8415184, z: 0}
+--- !u!95 &1487020092
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487020088}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 98aa1c64164d65543ae4ba2cf17cd1b6, type: 3}
+  m_Controller: {fileID: 9100000, guid: 24d649d8c03b53c4aa4a4c1e4c353def, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1487020093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487020088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820cb060ad1c2bf4a900f5fb7f4c8eec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1534318418
 GameObject:
   m_ObjectHideFlags: 0
