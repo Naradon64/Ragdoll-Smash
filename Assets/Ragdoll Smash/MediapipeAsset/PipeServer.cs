@@ -66,32 +66,48 @@ public class PipeServer : MonoBehaviour
 
         public Vector3 virtualHeadPosition;
 
-        public Body(Transform parent, GameObject landmarkPrefab, GameObject linePrefab,float s, GameObject headPrefab)
+        public Body(Transform parent)
         {
             this.parent = parent;
-            for (int i = 0; i < instances.Length; ++i)
-            {
-                instances[i] = Instantiate(landmarkPrefab);
-                instances[i].transform.localScale = Vector3.one * s;
-                instances[i].transform.parent = parent;
-                instances[i].name = ((Landmark)i).ToString();
 
-                if (headPrefab && i >= 0 && i <= 10)
+            // Initialize landmarks
+            for (int i = 0; i < LANDMARK_COUNT; ++i)
+            {
+                string landmarkName = ((Landmark)i).ToString();
+                Transform landmarkTransform = parent.Find(landmarkName);
+                if (landmarkTransform != null)
                 {
-                    instances[i].transform.localScale = Vector3.one * 0f;
+                    instances[i] = landmarkTransform.gameObject;
+                }
+                else
+                {
+                    Debug.LogError($"Landmark '{landmarkName}' is missing under the parent '{parent.name}'.");
                 }
             }
-            for (int i = 0; i < lines.Length; ++i)
+
+            // Initialize lines
+            for (int i = 0; i < LINES_COUNT; ++i)
             {
-                lines[i] = Instantiate(linePrefab).GetComponent<LineRenderer>();
+                Transform lineTransform = parent.Find($"Line{i}");
+                if (lineTransform != null)
+                {
+                    lines[i] = lineTransform.GetComponent<LineRenderer>();
+                }
+                else
+                {
+                    Debug.LogError($"Line 'Line{i}' is missing under the parent '{parent.name}'.");
+                }
             }
 
-            if (headPrefab)
+            // Initialize head if enabled
+            Transform headTransform = parent.Find("head");
+            if (headTransform != null)
             {
-                head = Instantiate(headPrefab);
-                head.transform.localPosition = headPrefab.transform.position;
-                head.transform.localRotation = headPrefab.transform.localRotation;
-                head.transform.localScale = headPrefab.transform.localScale;
+                head = headTransform.gameObject;
+            }
+            else
+            {
+                Debug.LogWarning("Head object is not found. Skipping head initialization.");
             }
         }
         public void UpdateLines()
@@ -191,7 +207,7 @@ public class PipeServer : MonoBehaviour
     {
         System.Globalization.CultureInfo.DefaultThreadCurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
-        body = new Body(parent,landmarkPrefab,linePrefab,landmarkScale,enableHead?headPrefab:null);
+       body = new Body(parent);
 
         Thread t = new Thread(new ThreadStart(Run));
         t.Start();

@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
+    path: Assets/Ragdoll Smash/Scenes/Main Menu.unity
     guid: bcbaf1bf51c75ad42b37dffc97f9ba62
   - enabled: 1
-    path: Assets/Scenes/Character and Terrain.unity
+    path: Assets/Ragdoll Smash/Scenes/Character and Terrain.unity
     guid: 2932a06d22893224b831f697b0925835
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
