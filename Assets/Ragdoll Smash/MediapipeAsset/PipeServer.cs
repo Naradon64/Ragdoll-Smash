@@ -225,8 +225,9 @@ public class PipeServer : MonoBehaviour
         {
             if (b.positionsBuffer[i].accumulatedValuesCount < samplesForPose)
                 continue;
+
             b.localPositionTargets[i] = b.positionsBuffer[i].value / (float)b.positionsBuffer[i].accumulatedValuesCount * multiplier;
-            b.positionsBuffer[i] = new AccumulatedBuffer(Vector3.zero,0);
+            b.positionsBuffer[i] = new AccumulatedBuffer(Vector3.zero, 0);
         }
 
         if (!b.setCalibration)
@@ -234,26 +235,64 @@ public class PipeServer : MonoBehaviour
             print("Set Calibration Data");
             b.Calibrate();
 
-            if(FindFirstObjectByType<CameraController>())
+            if (FindFirstObjectByType<CameraController>())
                 FindFirstObjectByType<CameraController>().Calibrate(b.instances[(int)Landmark.NOSE].transform);
         }
 
         for (int i = 0; i < LANDMARK_COUNT; ++i)
         {
-            b.instances[i].transform.localPosition=Vector3.MoveTowards(b.instances[i].transform.localPosition, b.localPositionTargets[i]+b.calibrationOffset, Time.deltaTime * maxSpeed);
+            Vector3 targetPosition = b.localPositionTargets[i] + b.calibrationOffset;
+
+            // Check if the landmark is part of the arm
+            if (IsArmLandmark(i))
+            {
+                // Allow free movement for arm landmarks
+                b.instances[i].transform.localPosition = Vector3.MoveTowards(
+                    b.instances[i].transform.localPosition,
+                    targetPosition,
+                    Time.deltaTime * maxSpeed
+                );
+            }
+            else
+            {
+                // Scale and clamp horizontal movement for other landmarks
+                float horizontalScaleFactor = 0.1f; // Adjust this for proportional scaling
+                targetPosition.x = b.instances[i].transform.localPosition.x + (targetPosition.x - b.instances[i].transform.localPosition.x) * horizontalScaleFactor;
+
+                float maxHorizontalRange = 4.0f; // Adjust this range as needed
+                targetPosition.x = Mathf.Clamp(targetPosition.x, -maxHorizontalRange, maxHorizontalRange);
+
+                b.instances[i].transform.localPosition = Vector3.MoveTowards(
+                    b.instances[i].transform.localPosition,
+                    targetPosition,
+                    Time.deltaTime * maxSpeed
+                );
+            }
         }
+
         b.UpdateLines();
 
         b.virtualHeadPosition = (b.Position(Landmark.RIGHT_EAR) + b.Position(Landmark.LEFT_EAR)) / 2f;
 
         if (b.head)
         {
-            // Experimental method and getting the head pose.
-            b.head.transform.position = b.virtualHeadPosition+Vector3.up* .5f;
-            Vector3 n1 = Vector3.Scale(new Vector3(.1f, 1f, .1f), GetNormal(b.Position((Landmark)0), b.Position((Landmark)8), b.Position((Landmark)7))).normalized;
-            Vector3 n2 = Vector3.Scale(new Vector3(1f, .1f, 1f), GetNormal(b.Position((Landmark)0), b.Position((Landmark)4), b.Position((Landmark)1))).normalized;
+            b.head.transform.position = b.virtualHeadPosition + Vector3.up * 0.5f;
+
+            Vector3 n1 = Vector3.Scale(new Vector3(0.1f, 1f, 0.1f), GetNormal(b.Position((Landmark)0), b.Position((Landmark)8), b.Position((Landmark)7))).normalized;
+            Vector3 n2 = Vector3.Scale(new Vector3(1f, 0.1f, 1f), GetNormal(b.Position((Landmark)0), b.Position((Landmark)4), b.Position((Landmark)1))).normalized;
+
             b.head.transform.rotation = Quaternion.LookRotation(-n2, n1);
         }
+    }
+
+    // Helper method to identify arm-related landmarks
+    private bool IsArmLandmark(int landmarkIndex)
+    {
+        return landmarkIndex == (int)Landmark.LEFT_ELBOW || landmarkIndex == (int)Landmark.RIGHT_ELBOW ||
+            landmarkIndex == (int)Landmark.LEFT_WRIST || landmarkIndex == (int)Landmark.RIGHT_WRIST ||
+            landmarkIndex == (int)Landmark.LEFT_PINKY || landmarkIndex == (int)Landmark.RIGHT_PINKY ||
+            landmarkIndex == (int)Landmark.LEFT_INDEX || landmarkIndex == (int)Landmark.RIGHT_INDEX ||
+            landmarkIndex == (int)Landmark.LEFT_THUMB || landmarkIndex == (int)Landmark.RIGHT_THUMB;
     }
 
     private void Run()

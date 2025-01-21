@@ -22,10 +22,17 @@ public class CameraController : MonoBehaviour
     {
         if (focus == null) return;
 
-        Vector3 t = focus.position+offset*.5f + (originalDelta.normalized * (distance));
-        transform.position = Vector3.Lerp(transform.position,  t, Time.deltaTime*2.5f);
+        // Calculate target position
+        Vector3 targetPosition = focus.position + offset * 0.5f + (originalDelta.normalized * distance);
 
-        Quaternion r = Quaternion.LookRotation((focus.position+offset - transform.position).normalized, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, r, Time.deltaTime * 1f);
+        // Constrain or scale horizontal movement (x-axis)
+        targetPosition.x *= 0.5f; // Reduce horizontal shift
+        // Or use a fixed range
+        // targetPosition.x = Mathf.Clamp(targetPosition.x, -5f, 5f);
+
+        // Smoothly update camera position and rotation
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 2.5f);
+        Quaternion targetRotation = Quaternion.LookRotation((focus.position + offset - transform.position).normalized, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 1f);
     }
 }
