@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1260b785da3e24ebe737764cc33de0, type: 3}
+  m_Name: AnimeGirl(Clone)45b945823d646c942a7c4ecbbc19039b
+  m_EditorClassIdentifier: 
+  note: 
+  parentCalibrationData:
+  - bone: 14
+    data:
+      parentn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderR/UpperArmR/
+      childn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderR/UpperArmR/LoweArmR/
+      tparentn: RIGHT_SHOULDER/
+      tchildn: RIGHT_ELBOW/
+      initialDir: {x: -0.9706287, y: 0.23339662, z: 0.058360748}
+      initialRotation: {x: 0.5292371, y: 0.5137818, z: 0.4823236, w: -0.47254705}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 16
+    data:
+      parentn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderR/UpperArmR/LoweArmR/
+      childn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderR/UpperArmR/LoweArmR/HandR/
+      tparentn: RIGHT_ELBOW/
+      tchildn: RIGHT_WRIST/
+      initialDir: {x: -0.84853053, y: 0.28971058, z: -0.44279084}
+      initialRotation: {x: 0.6956143, y: 0.6998143, z: -0.08188552, w: 0.14027065}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 2
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighR/
+      childn: AnimeGirl(Clone)/Armature/ThighR/ShinR/
+      tparentn: RIGHT_HIP/
+      tchildn: RIGHT_KNEE/
+      initialDir: {x: 0.06026096, y: 0.9737099, z: 0.21967606}
+      initialRotation: {x: -0.00071816146, y: -0.036735952, z: 0.99843526, w: 0.042155437}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 4
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighR/ShinR/
+      childn: AnimeGirl(Clone)/Armature/ThighR/ShinR/FootR/
+      tparentn: RIGHT_KNEE/
+      tchildn: RIGHT_ANKLE/
+      initialDir: {x: 0.07179831, y: 0.86183727, z: 0.5020772}
+      initialRotation: {x: 0.9996773, y: -0.012518235, z: 0.00033568358, w: -0.022103816}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 13
+    data:
+      parentn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderL/UpperArmL/
+      childn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderL/UpperArmL/LoweArmL/
+      tparentn: LEFT_SHOULDER/
+      tchildn: LEFT_ELBOW/
+      initialDir: {x: 0.97949, y: 0.20073982, z: 0.017403688}
+      initialRotation: {x: -0.51529884, y: 0.5327268, z: 0.48470187, w: 0.46447128}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 15
+    data:
+      parentn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderL/UpperArmL/LoweArmL/
+      childn: AnimeGirl(Clone)/Armature/Spine/Chest/ShoulderL/UpperArmL/LoweArmL/HandL/
+      tparentn: LEFT_ELBOW/
+      tchildn: LEFT_WRIST/
+      initialDir: {x: 0.8789452, y: 0.22024238, z: -0.4230231}
+      initialRotation: {x: 0.70426154, y: -0.6958647, z: 0.08033463, w: 0.11547613}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 1
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighL/
+      childn: AnimeGirl(Clone)/Armature/ThighL/ShinL/
+      tparentn: LEFT_HIP/
+      tchildn: LEFT_KNEE/
+      initialDir: {x: -0.12649651, y: 0.9597452, z: 0.25077412}
+      initialRotation: {x: -0.0014532348, y: -0.03686887, z: 0.9990623, w: -0.022654608}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 3
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighL/ShinL/
+      childn: AnimeGirl(Clone)/Armature/ThighL/ShinL/FootL/
+      tparentn: LEFT_KNEE/
+      tchildn: LEFT_ANKLE/
+      initialDir: {x: 0.07727498, y: 0.8522614, z: 0.51737714}
+      initialRotation: {x: 0.9996728, y: 0.014402192, z: 0.00019596564, w: -0.021141112}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 5
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighL/ShinL/FootL/
+      childn: 
+      tparentn: LEFT_ANKLE/
+      tchildn: LEFT_FOOT_INDEX/
+      initialDir: {x: 0.35071996, y: 0.6406093, z: -0.6830924}
+      initialRotation: {x: 0.010234659, y: 0.58562785, z: 0.8105151, w: -0.0009004846}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 6
+    data:
+      parentn: AnimeGirl(Clone)/Armature/ThighR/ShinR/FootR/
+      childn: 
+      tparentn: RIGHT_ANKLE/
+      tchildn: RIGHT_FOOT_INDEX/
+      initialDir: {x: -0.2576255, y: 0.70238286, z: -0.66354156}
+      initialRotation: {x: 0.007527726, y: 0.5874304, z: 0.8091484, w: -0.012159314}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  spineUpDown:
+    parentn: AnimeGirl(Clone)/Armature/Spine/
+    childn: AnimeGirl(Clone)/Armature/Spine/Chest/Neck/
+    tparentn: VirtualHip/
+    tchildn: VirtualNeck/
+    initialDir: {x: 0.01598241, y: -0.9334132, z: -0.3584471}
+    initialRotation: {x: -0.050505757, y: -0.00000015080312, z: 0.000000004415348, w: 0.99872375}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  hipsTwist:
+    parentn: AnimeGirl(Clone)/Armature/
+    childn: AnimeGirl(Clone)/Armature/
+    tparentn: RIGHT_HIP/
+    tchildn: LEFT_HIP/
+    initialDir: {x: 0.99958605, y: 0.020844258, z: 0.019830558}
+    initialRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  chest:
+    parentn: AnimeGirl(Clone)/Armature/Spine/Chest/
+    childn: AnimeGirl(Clone)/Armature/Spine/Chest/
+    tparentn: RIGHT_HIP/
+    tchildn: LEFT_HIP/
+    initialDir: {x: 0.99958605, y: 0.020844258, z: 0.019830558}
+    initialRotation: {x: -0.026281357, y: -0.0000002701118, z: 0.000000005431346, w: 0.9996546}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  head:
+    parentn: AnimeGirl(Clone)/Armature/Spine/Chest/Neck/
+    childn: AnimeGirl(Clone)/Armature/Spine/Chest/Neck/Head/
+    tparentn: VirtualNeck/
+    tchildn: NOSE/
+    initialDir: {x: 0.029906092, y: -0.55927855, z: -0.8284401}
+    initialRotation: {x: -0.048968494, y: -0.00000026988104, z: 0.000000010117603, w: 0.9988005}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
