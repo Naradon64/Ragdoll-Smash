@@ -5,7 +5,7 @@ KILL_THREADS = False
 DEBUG = True 
 
 # Change UDP connection settings (must match Unity side)
-USE_LEGACY_PIPES = False # Only supported on Windows (if True, use NamedPipes rather than UDP sockets)
+USE_LEGACY_PIPES = True # Only supported on Windows (if True, use NamedPipes rather than UDP sockets)
 HOST = '127.0.0.1'
 PORT = 52733
 
@@ -17,4 +17,4 @@ WIDTH = 320
 HEIGHT = 240
 
 # [0, 2] Higher numbers are more precise, but also cost more performance. The demo video used 2 (good environment is more important).
-MODEL_COMPLEXITY = 1
+MODEL_COMPLEXITY = 0

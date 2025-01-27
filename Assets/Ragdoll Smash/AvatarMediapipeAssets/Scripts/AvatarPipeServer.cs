@@ -14,7 +14,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class AvatarPipeServer : MonoBehaviour
 {
-    public bool useLegacyPipes = false; // True to use NamedPipes for interprocess communication (not supported on Linux)
+    public bool useLegacyPipes = true; // True to use NamedPipes for interprocess communication (not supported on Linux)
     public string host = "127.0.0.1"; // This machines host.
     public int port = 52733; // Must match the Python side.
     public Transform bodyParent;
@@ -26,7 +26,7 @@ public class AvatarPipeServer : MonoBehaviour
     public float landmarkScale = 1f;
     public float maxSpeed = 50f;
     public float debug_samplespersecond;
-    public int samplesForPose = 1;
+    public int samplesForPose = 33;
     public bool active;
 
     private NamedPipeServerStream serverNP;
@@ -52,6 +52,7 @@ public class AvatarPipeServer : MonoBehaviour
     {
         return virtualHip;
     }
+    private TransformCopier transformCopierScript;
 
     private void Start()
     {
@@ -67,7 +68,69 @@ public class AvatarPipeServer : MonoBehaviour
     private void Update()
     {
         UpdateBody(body);
+        // CheckLandmarksAvailability();
     }
+
+    // private void CheckLandmarksAvailability()
+    // {
+    //     GameObject playerObject = GameObject.Find("Player");
+
+    //     if (playerObject == null)
+    //     {
+    //         Debug.LogError("Player object not found!");
+    //         return;
+    //     }
+
+    //     GameObject casualModel = playerObject.transform.Find("Casual1")?.gameObject;
+
+    //     if (casualModel == null)
+    //     {
+    //         Debug.LogError("Casual1 model not found inside Player!");
+    //         return;
+    //     }
+
+    //     Debug.Log("Casual1 model found successfully.");
+
+    //     transformCopierScript = casualModel.GetComponent<TransformCopier>();
+
+    //     if (transformCopierScript == null)
+    //     {
+    //         Debug.LogError("TransformCopier script not found on Casual1!");
+    //         return;
+    //     }
+
+    //     bool allLandmarksAvailable = true;
+
+    //     // Debugging landmark counts
+    //     for (int i = 0; i < LANDMARK_COUNT; ++i)
+    //     {
+    //         Debug.Log($"Landmark {i} - Accumulated Values: {body.positionsBuffer[i].accumulatedValuesCount}");
+
+    //         if (body.positionsBuffer[i].accumulatedValuesCount < samplesForPose)
+    //         {
+    //             allLandmarksAvailable = false;
+    //             Debug.Log($"Landmark {i} is not available, accumulatedValuesCount: {body.positionsBuffer[i].accumulatedValuesCount}");
+    //             break;
+    //         }
+    //     }
+
+    //     if (allLandmarksAvailable)
+    //     {
+    //         if (!transformCopierScript.enabled)
+    //         {
+    //             Debug.Log("Enabling TransformCopier script");
+    //             transformCopierScript.enabled = true; // Enable the script when landmarks are available
+    //         }
+    //     }
+    //     else
+    //     {
+    //         if (transformCopierScript.enabled)
+    //         {
+    //             Debug.Log("Disabling TransformCopier script");
+    //             transformCopierScript.enabled = false; // Disable the script when landmarks are not available
+    //         }
+    //     }
+    // }
 
     private void UpdateBody(Body b)
     {

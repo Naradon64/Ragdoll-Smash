@@ -71,7 +71,7 @@ class BodyThread(threading.Thread):
                 image = capture.frame
                                 
                 # Image transformations and stuff
-                # image = cv2.flip(image, 1)
+                image = cv2.flip(image, 1)
                 image.flags.writeable = global_vars.DEBUG
                 
                 # Detections
@@ -101,6 +101,7 @@ class BodyThread(threading.Thread):
                         self.data += "{}|{}|{}|{}\n".format(i,hand_world_landmarks.landmark[i].x,hand_world_landmarks.landmark[i].y,hand_world_landmarks.landmark[i].z)
 
                 self.send_data(self.data)
+                print("send data: ", self.data)
                     
         self.pipe.close()
         capture.cap.release()
