@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1260b785da3e24ebe737764cc33de0, type: 3}
+  m_Name: pico_chan_chr_pico_00(Clone)0d273f8bc513134448a92a8539fb6c25
+  m_EditorClassIdentifier: 
+  note: 
+  parentCalibrationData:
+  - bone: 14
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/RightShoulder/RightArm/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/RightShoulder/RightArm/RightForeArm/
+      tparentn: PipeServer/Body Parent/RIGHT_SHOULDER/
+      tchildn: PipeServer/Body Parent/RIGHT_ELBOW/
+      initialDir: {x: -0.9786214, y: 0.042427164, z: -0.20124617}
+      initialRotation: {x: -0.000000879421, y: -1.8369584e-16, z: -1, w: -5.536697e-16}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 16
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/RightShoulder/RightArm/RightForeArm/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/RightShoulder/RightArm/RightForeArm/RightHand/
+      tparentn: PipeServer/Body Parent/RIGHT_ELBOW/
+      tchildn: PipeServer/Body Parent/RIGHT_WRIST/
+      initialDir: {x: -0.995278, y: -0.09509117, z: -0.019475577}
+      initialRotation: {x: 0.0000011365049, y: -1.8369695e-16, z: -1, w: -5.5366933e-16}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 2
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/RightUpLeg/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/RightUpLeg/RightLeg/
+      tparentn: PipeServer/Body Parent/RIGHT_HIP/
+      tchildn: PipeServer/Body Parent/RIGHT_KNEE/
+      initialDir: {x: -0.009594538, y: -0.9952235, z: 0.09714961}
+      initialRotation: {x: -0, y: -6.123234e-17, z: -1, w: 0}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 4
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/RightUpLeg/RightLeg/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/RightUpLeg/RightLeg/RightFoot/
+      tparentn: PipeServer/Body Parent/RIGHT_KNEE/
+      tchildn: PipeServer/Body Parent/RIGHT_ANKLE/
+      initialDir: {x: 0.018027123, y: -0.797682, z: 0.60280883}
+      initialRotation: {x: -0, y: -6.123234e-17, z: -1, w: 0}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 13
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/LeftShoulder/LeftArm/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/LeftShoulder/LeftArm/LeftForeArm/
+      tparentn: PipeServer/Body Parent/LEFT_SHOULDER/
+      tchildn: PipeServer/Body Parent/LEFT_ELBOW/
+      initialDir: {x: 0.878837, y: -0.28819144, z: -0.3802515}
+      initialRotation: {x: 2.2841155e-14, y: 1, z: 1.2246109e-16, w: 0.0000010455531}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 15
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/LeftShoulder/LeftArm/LeftForeArm/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/LeftShoulder/LeftArm/LeftForeArm/LeftHand/
+      tparentn: PipeServer/Body Parent/LEFT_ELBOW/
+      tchildn: PipeServer/Body Parent/LEFT_WRIST/
+      initialDir: {x: 0.9247881, y: -0.060840804, z: -0.37558663}
+      initialRotation: {x: 8.351689e-15, y: 1, z: -1.8508602e-15, w: -0.0000009703897}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 1
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/LeftUpLeg/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/LeftUpLeg/LeftLeg/
+      tparentn: PipeServer/Body Parent/LEFT_HIP/
+      tchildn: PipeServer/Body Parent/LEFT_KNEE/
+      initialDir: {x: -0.11351948, y: -0.9727816, z: 0.20201291}
+      initialRotation: {x: -0, y: 1, z: -0, w: 0}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  - bone: 3
+    data:
+      parentn: pico_chan_chr_pico_00(Clone)/root/Hips/LeftUpLeg/LeftLeg/
+      childn: pico_chan_chr_pico_00(Clone)/root/Hips/LeftUpLeg/LeftLeg/LeftFoot/
+      tparentn: PipeServer/Body Parent/LEFT_KNEE/
+      tchildn: PipeServer/Body Parent/LEFT_ANKLE/
+      initialDir: {x: 0.11387484, y: -0.82234514, z: 0.55747724}
+      initialRotation: {x: -0, y: 1, z: -0, w: 0}
+      targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  spineUpDown:
+    parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/
+    childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/Neck/
+    tparentn: VirtualHip/
+    tchildn: VirtualNeck/
+    initialDir: {x: -0.03020511, y: 0.9813237, z: -0.18997769}
+    initialRotation: {x: -0, y: 1, z: -0, w: 0}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  hipsTwist:
+    parentn: pico_chan_chr_pico_00(Clone)/root/Hips/
+    childn: pico_chan_chr_pico_00(Clone)/root/Hips/
+    tparentn: PipeServer/Body Parent/RIGHT_HIP/
+    tchildn: PipeServer/Body Parent/LEFT_HIP/
+    initialDir: {x: 0.98785305, y: -0.0010081496, z: -0.15538773}
+    initialRotation: {x: -0, y: 1, z: -0, w: 0}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  chest:
+    parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/
+    childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/
+    tparentn: PipeServer/Body Parent/RIGHT_HIP/
+    tchildn: PipeServer/Body Parent/LEFT_HIP/
+    initialDir: {x: 0.98785305, y: -0.0010081496, z: -0.15538773}
+    initialRotation: {x: -0, y: 1, z: -0, w: 0}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
+  head:
+    parentn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/Neck/
+    childn: pico_chan_chr_pico_00(Clone)/root/Hips/Spine/Spine01/Spine02/Neck/Head/
+    tparentn: VirtualNeck/
+    tchildn: PipeServer/Body Parent/NOSE/
+    initialDir: {x: 0.16142435, y: 0.34948072, z: -0.92293304}
+    initialRotation: {x: -0, y: 1, z: -0, w: 0}
+    targetRotation: {x: 0, y: 0, z: 0, w: 0}
