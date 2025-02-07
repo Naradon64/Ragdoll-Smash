@@ -1,11 +1,12 @@
 using UnityEngine;
+using System.Collections;
 using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
     [Header("Detection Settings")]
     public float detectionRange = 10f;  // Range to detect the player
-    public float attackRange = 1.5f;    // Range to perform attacks
+    public float attackRange = 2.4f;    // Range to perform attacks
     public float attackCooldown = 1.5f; // Time between attacks
 
     [Header("References")]
@@ -37,6 +38,8 @@ public class EnemyAI : MonoBehaviour
         if (distanceToPlayer <= attackRange)
         {
             HandleAttack();
+            Debug.Log("Attack!!!");
+
         }
         else if (distanceToPlayer <= detectionRange)
         {
@@ -75,7 +78,7 @@ public class EnemyAI : MonoBehaviour
         animator.ResetTrigger("AttackType2");
     }
 
-    void HandleAttack()
+void HandleAttack()
     {
         // Stop movement during attack
         navMeshAgent.isStopped = true;
@@ -84,19 +87,10 @@ public class EnemyAI : MonoBehaviour
         // Check if enough time has passed since the last attack
         if (Time.time >= lastAttackTime + attackCooldown)
         {
-            // Start the attack animation (randomize between two attack types)
-            int attackType = Random.Range(0, 2);
-            if (attackType == 0)
-            {
-                animator.SetTrigger("AttackType1");
-            }
-            else
-            {
-                animator.SetTrigger("AttackType2");
-            }
-
-            // Update last attack time
+            animator.SetTrigger("AttackType1");
             lastAttackTime = Time.time;
         }
     }
+
+
 }

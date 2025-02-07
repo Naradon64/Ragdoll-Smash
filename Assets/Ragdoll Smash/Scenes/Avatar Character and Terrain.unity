@@ -1226,6 +1226,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1087144265}
+    - target: {fileID: 4623372162784196368, guid: a0dc71b28dfb6574cb960a26320c53f8, type: 3}
+      propertyPath: attackRange
+      value: 2.4
+      objectReference: {fileID: 0}
     - target: {fileID: 6592759347388771812, guid: a0dc71b28dfb6574cb960a26320c53f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.911824
