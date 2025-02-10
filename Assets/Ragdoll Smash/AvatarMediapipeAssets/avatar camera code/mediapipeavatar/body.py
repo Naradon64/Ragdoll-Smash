@@ -96,12 +96,12 @@ class BodyThread(threading.Thread):
                 self.data = ""
                 i = 0
                 if results.pose_world_landmarks:
-                    hand_world_landmarks = results.pose_world_landmarks
-                    for i in range(0,33):
-                        self.data += "{}|{}|{}|{}\n".format(i,hand_world_landmarks.landmark[i].x,hand_world_landmarks.landmark[i].y,hand_world_landmarks.landmark[i].z)
-
-                self.send_data(self.data)
-                print("send data: ", self.data)
+                    self.data = "\n".join(
+                        f"{i}|{lmk.x:.6f}|{lmk.y:.6f}|{lmk.z:.6f}"
+                        for i, lmk in enumerate(results.pose_world_landmarks.landmark)
+                    )
+                    self.send_data(self.data)
+                    print("send data: ", self.data)
                     
         self.pipe.close()
         capture.cap.release()

@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRange: 10
-  attackRange: 1.5
+  attackRange: 2.4
   attackCooldown: 1.5
   player: {fileID: 0}
 --- !u!1001 &6334600039195358457
