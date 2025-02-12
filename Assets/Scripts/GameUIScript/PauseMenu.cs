@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
+    public GameObject healthBar;
     public static bool isPaused;
     public bool cursorLocked = true; // Track cursor lock state
 
@@ -16,15 +17,18 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(!DieMenu.isDie) // Use the static reference instead of dieMenu.isDied
         {
-            if(isPaused)
+            if(Input.GetKeyDown(KeyCode.Escape))
             {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
+                if(isPaused)
+                {
+                    ResumeGame();
+                }
+                else
+                {
+                    PauseGame();
+                }
             }
         }
     }
@@ -32,6 +36,7 @@ public class PauseMenu : MonoBehaviour
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
+        healthBar.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
         Cursor.lockState = CursorLockMode.None; // Unlock cursor
@@ -42,9 +47,9 @@ public class PauseMenu : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
+        healthBar.SetActive(true);
         Time.timeScale = 1f;
-        isPaused = false;
-       
+        isPaused = false;        
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
@@ -54,9 +59,10 @@ public class PauseMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(1); // scene from project profile
         pauseMenu.SetActive(false);
+        healthBar.SetActive(true);
         Time.timeScale = 1f;
         isPaused = false;
-
+        DieMenu.isDie = false; // Reset die state
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -66,5 +72,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0); // scene from project profile
         isPaused = false;
+        DieMenu.isDie = false; // Reset die state
     }
 }

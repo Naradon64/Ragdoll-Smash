@@ -4,11 +4,12 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Weapon
   - Enemy
   - Item
   - LeftHand
   - RightHand
+  - EnemyWeapon
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX

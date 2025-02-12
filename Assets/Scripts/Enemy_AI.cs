@@ -38,7 +38,7 @@ public class EnemyAI : MonoBehaviour
         if (distanceToPlayer <= attackRange)
         {
             HandleAttack();
-            Debug.Log("Attack!!!");
+            // Debug.Log("Attack!!!");
 
         }
         else if (distanceToPlayer <= detectionRange)
