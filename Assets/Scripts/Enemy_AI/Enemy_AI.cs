@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour
     public float detectionRange = 10f;  // Range to detect the player
     public float attackRange = 2.4f;    // Range to perform attacks
     public float attackCooldown = 1.5f; // Time between attacks
+    public float rotationSpeed = 5f;    // Speed at which the enemy rotates to face the player
 
     [Header("References")]
     public Transform player;           // Reference to the player
@@ -38,8 +39,6 @@ public class EnemyAI : MonoBehaviour
         if (distanceToPlayer <= attackRange)
         {
             HandleAttack();
-            // Debug.Log("Attack!!!");
-
         }
         else if (distanceToPlayer <= detectionRange)
         {
@@ -78,11 +77,16 @@ public class EnemyAI : MonoBehaviour
         animator.ResetTrigger("AttackType2");
     }
 
-void HandleAttack()
+    void HandleAttack()
     {
         // Stop movement during attack
         navMeshAgent.isStopped = true;
         animator.SetBool("isWalking", false);
+
+        // Make the enemy face the player
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
 
         // Check if enough time has passed since the last attack
         if (Time.time >= lastAttackTime + attackCooldown)
@@ -91,6 +95,4 @@ void HandleAttack()
             lastAttackTime = Time.time;
         }
     }
-
-
 }
