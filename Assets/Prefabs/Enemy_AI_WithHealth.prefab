@@ -286,7 +286,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 1.6
@@ -329,6 +329,7 @@ MonoBehaviour:
   detectionRange: 10
   attackRange: 2.4
   attackCooldown: 1.5
+  rotationSpeed: 5
   player: {fileID: 0}
 --- !u!114 &7547717475512816003
 MonoBehaviour:
@@ -884,9 +885,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handler:
-    _Editor_SelectedChain: 0
+    _Editor_SelectedChain: 4
     _Editor_ChainCategory: 0
-    _EditorCategory: 2
+    _EditorCategory: 3
     _EditorMainCategory: 0
     _EditorMotionCategory: 2
     m_hemi: {fileID: -2508796484986968503, guid: 44d994eaad14fdf49a2dd378b4d62094, type: 3}
@@ -1022,7 +1023,7 @@ MonoBehaviour:
     FallOnZeroAnchor: 1
     BaseTransform: {fileID: 0}
     Mecanim: {fileID: 113767698529147890}
-    RagdollLogic: 1
+    RagdollLogic: 0
     RagdollSizeMultiplier: 1
     RagdollThicknessMultiplier: 1
     ReferenceMass: 50
@@ -1050,7 +1051,7 @@ MonoBehaviour:
     UnitySolverIterations: 12
     Calibrate: 1
     AnimatePhysics: 0
-    ApplyPositions: 0
+    ApplyPositions: 1
     OptimizeOnZeroBlend: 0
     HideDummyInSceneView: 0
     IgnoreBoundedColliders: 1
