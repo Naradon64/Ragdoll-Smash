@@ -6,9 +6,15 @@ public class EnemyAI : MonoBehaviour
 {
     [Header("Detection Settings")]
     public float detectionRange = 10f;  // Range to detect the player
-    public float attackRange = 2.4f;    // Range to perform attacks
+    public float attackRange = 2f;    // Range to perform attacks
     public float attackCooldown = 1.5f; // Time between attacks
     public float rotationSpeed = 5f;    // Speed at which the enemy rotates to face the player
+
+    [Header("Movement Settings")]
+    public float movementSpeed = 2f; // Speed at which the enemy moves DEFAULT AT 3.5
+
+    [Header("Animation Settings")]
+    public float animationSpeedMultiplier = 0.6f; // Multiplier for animation speed 
 
     [Header("References")]
     public Transform player;           // Reference to the player
@@ -28,10 +34,20 @@ public class EnemyAI : MonoBehaviour
             Debug.LogError("NavMeshAgent not found on Enemy!");
         if (!animator)
             Debug.LogError("Animator not found on the Model!");
+
+        // Set the initial movement speed of the NavMeshAgent
+        navMeshAgent.speed = movementSpeed;
+
+        // Set the initial animation speed
+        animator.speed = animationSpeedMultiplier;
     }
 
     void Update()
     {
+        // Update NavMeshAgent speed and animation speed dynamically
+        navMeshAgent.speed = movementSpeed;
+        animator.speed = animationSpeedMultiplier;
+
         // Calculate distance to the player
         distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
