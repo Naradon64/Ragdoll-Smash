@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
-using TMPro; 
+using TMPro;
+using FIMSpace.FProceduralAnimation;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class EnemyHealth : MonoBehaviour
     public float currentHealth;
     public event Action<float> OnHealthChanged;
     public TextMeshProUGUI healthText;
-
-
+    public RagdollAnimator2 myRagdollAnimator;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +32,10 @@ public class EnemyHealth : MonoBehaviour
             {
                 TakeDamage(10f);
             }
+         if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     public void TakeDamage(float damage)
@@ -48,22 +53,31 @@ public class EnemyHealth : MonoBehaviour
         {
             UpdateHealthText();
         }
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
     }
     void Die()
     {
         Debug.Log("Enemy Died!");
 
-        ///
-        /// Code to trigger the ragdoll to "falling" state and then destroy the object
-        ///
+        // Access the Animator component and set 'isDead' to true
+        Animator enemyAnimator = GetComponentInChildren<Animator>();
+        if (enemyAnimator != null)
+        {
+            enemyAnimator.SetBool("isDead", true);  // Set isDead flag
+        }
 
+        // Trigger the ragdoll fall state
+        // myRagdollAnimator.User_SwitchFallState();
+
+        // Destroy the enemy after a 5-second delay
+        // Invoke("Destroy", 10f);
+    }
+
+    void Destroy()
+    {
         Destroy(gameObject);
     }
+
+
 
     // Helper method to update the health text
     private void UpdateHealthText()

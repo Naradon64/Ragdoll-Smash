@@ -43,28 +43,38 @@ public class EnemyAI : MonoBehaviour
     }
 
     void Update()
+{
+    // If the enemy is dead, stop all actions
+        if (animator.GetBool("isDead"))
     {
-        // Update NavMeshAgent speed and animation speed dynamically
-        navMeshAgent.speed = movementSpeed;
-        animator.speed = animationSpeedMultiplier;
+        // Stop all animations immediately
+        // animator.speed = 0f;  // This effectively freezes all animations
+        navMeshAgent.isStopped = true; // Stop the nav mesh agent (no movement)
 
-        // Calculate distance to the player
-        distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        // Check for attack or movement
-        if (distanceToPlayer <= attackRange)
-        {
-            HandleAttack();
-        }
-        else if (distanceToPlayer <= detectionRange)
-        {
-            HandleChase();
-        }
-        else
-        {
-            HandleIdle();
-        }
+        // Ensure no other triggers are activated
+        animator.SetBool("isWalking", false);
+        animator.ResetTrigger("AttackType1");
+        animator.ResetTrigger("AttackType2");
+        return; // Exit the update to stop further logic
     }
+
+    // Continue normal AI logic if the enemy is not dead
+    distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+    if (distanceToPlayer <= attackRange)
+    {
+        HandleAttack();
+    }
+    else if (distanceToPlayer <= detectionRange)
+    {
+        HandleChase();
+    }
+    else
+    {
+        HandleIdle();
+    }
+}
+
 
     void HandleChase()
     {

@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 4199797542844670129}
   - component: {fileID: 2165168657278534185}
   - component: {fileID: 7547717475512816003}
+  - component: {fileID: 5021046574858218400}
   m_Layer: 0
   m_Name: Enemy_AI_WithHealth
   m_TagString: Enemy
@@ -284,14 +285,14 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 1.6
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!195 &4199797542844670129
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -327,9 +328,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRange: 10
-  attackRange: 2.4
+  attackRange: 2
   attackCooldown: 1.5
   rotationSpeed: 5
+  movementSpeed: 2
+  animationSpeedMultiplier: 0.6
   player: {fileID: 0}
 --- !u!114 &7547717475512816003
 MonoBehaviour:
@@ -346,6 +349,20 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthText: {fileID: 0}
+  myRagdollAnimator: {fileID: 5050929327287578064}
+--- !u!114 &5021046574858218400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5250868637743043311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0a34659e3334eb4a9422aae4cf4e104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 100
 --- !u!1 &6004402733060516730
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +906,7 @@ MonoBehaviour:
     _Editor_ChainCategory: 0
     _EditorCategory: 3
     _EditorMainCategory: 0
-    _EditorMotionCategory: 2
+    _EditorMotionCategory: 0
     m_hemi: {fileID: -2508796484986968503, guid: 44d994eaad14fdf49a2dd378b4d62094, type: 3}
     m_cyli: {fileID: 2534964839176971238, guid: 2ea99bbc50a9266448416f21d645a771, type: 3}
     m_sphere: {fileID: 4711208715938537054, guid: b43618aedd7473a4eb1aaa5e80012a1d, type: 3}
@@ -1004,7 +1021,7 @@ MonoBehaviour:
     dummyContainer: {fileID: 0}
     skeletonFillExtraBonesList: []
     MusclesPower: 1
-    SpringsValue: 1500
+    SpringsValue: 600
     SpringsOnFall: 0
     DampingValue: 40
     DampingValueOnFall: 0
@@ -2149,7 +2166,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
