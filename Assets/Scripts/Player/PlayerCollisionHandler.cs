@@ -22,9 +22,23 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "EnemyWeapon" && currentDamageCooldown <= 0f)
+        // if (collision.gameObject.tag == "Enemy" && currentDamageCooldown <= 0f)
+        // {
+        //     Debug.Log($"ชน {collision.gameObject.name}");
+        //     if (playerHealth != null)
+        //     {
+        //         playerHealth.TakeDamage(10f);
+        //     }
+        //     // Reset damage cooldown
+        //     currentDamageCooldown = damageCooldown;
+        // }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EnemyWeapon" && currentDamageCooldown <= 0f)
         {
-            Debug.Log($"โดน {collision.gameObject.name} โจมตี");
+            Debug.Log($"โดน {other.gameObject.name} โจมตี");
             // Call the TakeDamage method from PlayerHealth
             if (playerHealth != null)
             {
@@ -34,20 +48,6 @@ public class PlayerCollisionHandler : MonoBehaviour
             currentDamageCooldown = damageCooldown;
         }
 
-        if (collision.gameObject.tag == "Enemy" && currentDamageCooldown <= 0f)
-        {
-            Debug.Log($"ชน {collision.gameObject.name}");
-            if (playerHealth != null)
-            {
-                playerHealth.TakeDamage(10f);
-            }
-            // Reset damage cooldown
-            currentDamageCooldown = damageCooldown;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
         // Check if the item is in range of either hand and if it's not already held
         if (((other.CompareTag("Item") || (other.CompareTag("PlayerWeapon"))) && heldItem == null && currentCooldown <= 0))
         {

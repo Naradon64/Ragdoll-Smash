@@ -19,15 +19,15 @@ public class PlayerAction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the player is holding an item with the tag "PlayerWeapon"
-        if (heldItem != null && heldItem.CompareTag("PlayerWeapon"))
-        {
-            // Check if it triggers with an enemy
-            if (other.CompareTag("Enemy"))
-            {
-                Debug.Log($"โจมตีใส่ {other.gameObject.name}");
-            }
-        }
+        // // Check if the player is holding an item with the tag "PlayerWeapon"
+        // if (heldItem != null && heldItem.CompareTag("PlayerWeapon"))
+        // {
+        //     // Check if it triggers with an enemy
+        //     if (other.CompareTag("Enemy"))
+        //     {
+        //         Debug.Log($"โจมตีใส่ {other.gameObject.name}");
+        //     }
+        // }
     }
 
     // To assign held item from PlayerCollisionHandler
