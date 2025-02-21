@@ -24,6 +24,9 @@ public class EnemyAI : MonoBehaviour
     private float distanceToPlayer;    // Distance to the player
     private float lastAttackTime = 0;  // Tracks time since the last attack
 
+    [Header("Weapon Settings")]
+    public Collider swordCollider; // Reference to the sword's collider
+
     void Start()
     {
         // Get required components
@@ -40,6 +43,11 @@ public class EnemyAI : MonoBehaviour
 
         // Set the initial animation speed
         animator.speed = animationSpeedMultiplier;
+
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
+        }
     }
 
     void Update()
@@ -49,7 +57,7 @@ public class EnemyAI : MonoBehaviour
     {
         // Stop all animations immediately
         // animator.speed = 0f;  // This effectively freezes all animations
-        navMeshAgent.isStopped = true; // Stop the nav mesh agent (no movement)
+        navMeshAgent.isStopped  = true; // Stop the nav mesh agent (no movement)
 
         // Ensure no other triggers are activated
         animator.SetBool("isWalking", false);
@@ -119,6 +127,22 @@ public class EnemyAI : MonoBehaviour
         {
             animator.SetTrigger("AttackType1");
             lastAttackTime = Time.time;
+        }
+    }
+
+    public void EnableSwordCollider()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
+    }
+
+    public void DisableSwordCollider()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
         }
     }
 }

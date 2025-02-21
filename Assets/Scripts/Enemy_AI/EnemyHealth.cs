@@ -10,6 +10,7 @@ public class EnemyHealth : MonoBehaviour
     public event Action<float> OnHealthChanged;
     public TextMeshProUGUI healthText;
     public RagdollAnimator2 myRagdollAnimator;
+    private Canvas healthCanvas; 
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,6 +24,8 @@ public class EnemyHealth : MonoBehaviour
         {
             UpdateHealthText();
         }
+            healthCanvas = GetComponentInChildren<Canvas>();
+
     }
 
     // Update is called once per frame
@@ -64,6 +67,10 @@ public class EnemyHealth : MonoBehaviour
         {
             enemyAnimator.SetBool("isDead", true);  // Set isDead flag
         }
+        if (healthCanvas != null)
+        {
+           Invoke(nameof(DisableHealthCanvas), 3f);
+        }
 
         // Trigger the ragdoll fall state
         // myRagdollAnimator.User_SwitchFallState();
@@ -76,6 +83,10 @@ public class EnemyHealth : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    void DisableHealthCanvas()
+{
+    healthCanvas.gameObject.SetActive(false);
+}
 
 
 
