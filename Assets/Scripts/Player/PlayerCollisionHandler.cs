@@ -127,6 +127,11 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
     }
 
+    public void ForceDropItem()
+    {
+        DropItem();
+    }
+
     private void Update()
     {
         // หลังจากที่ set cooldown ใน PickupItem พอปล่อยก็จะนับเวลาจนกว่าจะหยิบได้อีก

@@ -2,35 +2,55 @@ using UnityEngine;
 
 public class PlayerAction : MonoBehaviour
 {
-    private GameObject heldItem; // The item currently held by the player
-    private Transform rightHand;
-    private Transform leftHand;
+    private GameObject heldItem;
+    
+    [SerializeField] private Transform rightArm; // Assign in Inspector
+    [SerializeField] private Transform leftArm;  // Assign in Inspector
 
-    // Reference to PlayerCollisionHandler for item picking logic
+    private Vector3 prevRightArmPos;
+    private Vector3 prevLeftArmPos;
+    private float velocityThreshold = 10.0f; // Adjust based on testing
+
     private PlayerCollisionHandler playerCollisionHandler;
 
     private void Start()
     {
-        // Get references to the hands and the PlayerCollisionHandler component
-        rightHand = transform.Find("RightHand");
-        leftHand = transform.Find("LeftHand");
-        playerCollisionHandler = GetComponent<PlayerCollisionHandler>(); // Assuming PlayerCollisionHandler is on the same object
+        playerCollisionHandler = GetComponent<PlayerCollisionHandler>();
+
+        // Initialize previous positions
+        if (rightArm != null) prevRightArmPos = rightArm.position;
+        if (leftArm != null) prevLeftArmPos = leftArm.position;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        // // Check if the player is holding an item with the tag "PlayerWeapon"
-        // if (heldItem != null && heldItem.CompareTag("PlayerWeapon"))
-        // {
-        //     // Check if it triggers with an enemy
-        //     if (other.CompareTag("Enemy"))
-        //     {
-        //         Debug.Log($"โจมตีใส่ {other.gameObject.name}");
-        //     }
-        // }
+        // Calculate velocities
+        if (rightArm != null && leftArm != null)
+        {
+            Vector3 rightArmVelocity = (rightArm.position - prevRightArmPos) / Time.deltaTime;
+            Vector3 leftArmVelocity = (leftArm.position - prevLeftArmPos) / Time.deltaTime;
+
+            // Store current position for the next frame
+            prevRightArmPos = rightArm.position;
+            prevLeftArmPos = leftArm.position;
+
+            // Check if velocity exceeds the threshold and drop the item
+            if (heldItem != null)
+            {
+                if (rightArmVelocity.magnitude > velocityThreshold)
+                {
+                    Debug.Log($"Right arm moved too fast: {rightArmVelocity.magnitude}, dropping item.");
+                    playerCollisionHandler.ForceDropItem();
+                }
+                else if (leftArmVelocity.magnitude > velocityThreshold)
+                {
+                    Debug.Log($"Left arm moved too fast: {leftArmVelocity.magnitude}, dropping item.");
+                    playerCollisionHandler.ForceDropItem();
+                }
+            }
+        }
     }
 
-    // To assign held item from PlayerCollisionHandler
     public void SetHeldItem(GameObject item)
     {
         heldItem = item;
