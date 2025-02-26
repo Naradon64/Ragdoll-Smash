@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using FIMSpace.FProceduralAnimation;
+using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class EnemyHealth : MonoBehaviour
     public TextMeshProUGUI healthText;
     public RagdollAnimator2 myRagdollAnimator;
     private Canvas healthCanvas; 
-    
+
+    private EnemyAI enemyAI;  // Reference to EnemyAI component
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,24 +26,31 @@ public class EnemyHealth : MonoBehaviour
         {
             UpdateHealthText();
         }
-            healthCanvas = GetComponentInChildren<Canvas>();
 
+        healthCanvas = GetComponentInChildren<Canvas>();
+
+        // Get the EnemyAI component
+        enemyAI = GetComponent<EnemyAI>();
+        if (enemyAI == null)
+        {
+            Debug.LogError("EnemyAI component not found on " + gameObject.name);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.H))
-            {
-                TakeDamage(10f);
-            }
-         if (currentHealth <= 0)
+        {
+            TakeDamage(10f, Vector3.forward); // Example of calling with direction
+        }
+        if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 damageDirection)
     {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
@@ -51,12 +60,27 @@ public class EnemyHealth : MonoBehaviour
         // Notify the UI to update
         OnHealthChanged?.Invoke(currentHealth);
 
+        // Apply knockback if health is greater than 0
+        if (currentHealth > 0)
+        {
+            // Apply knockback through EnemyAI
+            if (enemyAI != null)
+            {
+                enemyAI.ApplyKnockback(damageDirection.normalized * 5f); // Adjust knockback force as needed
+            }
+        }
+        else
+        {
+            Die();
+        }
+
         // Update health text UI
         if (healthText != null)
         {
             UpdateHealthText();
         }
     }
+
     void Die()
     {
         Debug.Log("Enemy Died!");
@@ -69,7 +93,7 @@ public class EnemyHealth : MonoBehaviour
         }
         if (healthCanvas != null)
         {
-           Invoke(nameof(DisableHealthCanvas), 3f);
+            Invoke(nameof(DisableHealthCanvas), 3f);
         }
 
         // Trigger the ragdoll fall state
@@ -83,12 +107,11 @@ public class EnemyHealth : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
     void DisableHealthCanvas()
-{
-    healthCanvas.gameObject.SetActive(false);
-}
-
-
+    {
+        healthCanvas.gameObject.SetActive(false);
+    }
 
     // Helper method to update the health text
     private void UpdateHealthText()

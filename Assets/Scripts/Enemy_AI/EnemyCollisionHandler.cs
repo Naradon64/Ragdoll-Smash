@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyCollisionHandler : MonoBehaviour
 {
-    public float damageAmount = 30f; // Damage the enemy takes per hit
+    public float damageAmount = 20f; // Damage the enemy takes per hit
     private float damageCooldown = 2f; // Cooldown time to prevent rapid hits
     private float currentCooldown = 0f; // Timer for cooldown
     private EnemyHealth enemyHealth; // Reference to EnemyHealth component
@@ -31,7 +31,12 @@ public class EnemyCollisionHandler : MonoBehaviour
         // Check if the object hitting the enemy has the "PlayerWeapon" tag
         if (other.CompareTag("PlayerWeapon") && currentCooldown <= 0f)
         {
-            enemyHealth?.TakeDamage(damageAmount); // เรียกใช้ TakeDamage() ใน EnemyHealth.cs 
+            // Calculate the damage direction (from the enemy to the player)
+            Vector3 damageDirection = transform.position - other.transform.position;
+
+            // Call TakeDamage with the damage and direction
+            enemyHealth?.TakeDamage(damageAmount, damageDirection);
+
             Debug.Log($"{gameObject.name} took {damageAmount} damage!");
             currentCooldown = damageCooldown; // Start cooldown
         }
