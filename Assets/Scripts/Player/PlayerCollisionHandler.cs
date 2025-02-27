@@ -132,6 +132,34 @@ public class PlayerCollisionHandler : MonoBehaviour
         DropItem();
     }
 
+    public void ForceThrowItem(Vector3 throwVelocity)
+    {
+        if (heldItem != null)
+        {
+            Debug.Log($"Throwing {heldItem.name} with velocity {throwVelocity}");
+
+            heldItem.transform.SetParent(null);
+            Rigidbody rb = heldItem.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                Collider itemCollider = heldItem.GetComponent<Collider>();
+                if (itemCollider != null)
+                {
+                    itemCollider.isTrigger = false;
+                }
+
+                rb.AddForce(throwVelocity * 2.0f, ForceMode.Impulse); // Apply force to throw the item
+            }
+
+            heldItem = null;
+            currentHand = null;
+            playerAction.SetHeldItem(null);
+        }
+    }
+
     private void Update()
     {
         // หลังจากที่ set cooldown ใน PickupItem พอปล่อยก็จะนับเวลาจนกว่าจะหยิบได้อีก

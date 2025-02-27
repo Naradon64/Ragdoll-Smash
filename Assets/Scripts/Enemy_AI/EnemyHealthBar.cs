@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EnemyHealthBar : MonoBehaviour
 {
     public Slider healthSlider; // Drag this into the inspector
+    public TextMeshProUGUI healthText; // Health text UI
     private EnemyHealth enemyHealth;
     
     private float targetHealth;
@@ -37,10 +39,21 @@ public class EnemyHealthBar : MonoBehaviour
         {
             healthSlider.value = Mathf.Lerp(healthSlider.value, targetHealth, smoothSpeed * Time.deltaTime);
         }
+
+        // Update text with lerp (rounded for readability)
+        UpdateHealthText(Mathf.Round(healthSlider.value));
     }
 
     void UpdateHealthBar(float healthValue)
     {
         targetHealth = healthValue; // Set target value
+    }
+
+    void UpdateHealthText(float healthValue)
+    {
+        if (healthText != null)
+        {
+            healthText.text = $"{healthValue}/{enemyHealth.maxHealth}";
+        }
     }
 }
