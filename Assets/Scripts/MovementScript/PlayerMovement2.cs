@@ -31,6 +31,9 @@ public class PlayerMovement2 : MonoBehaviour
     
     Rigidbody rb;
 
+    [Header("Rotation")]
+    public float rotationSpeed = 10f; // Adjust rotation speed as needed
+
     private void Update()
     {
         // Ground check
@@ -54,6 +57,7 @@ public class PlayerMovement2 : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+        RotatePlayer(); // Add rotation in FixedUpdate
     }
 
     private void Start()
@@ -91,6 +95,14 @@ public class PlayerMovement2 : MonoBehaviour
 
         // in air
         rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+    }
+    private void RotatePlayer()
+    {
+        if (moveDirection.magnitude >= 0.1f) // Check if there is movement
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime));
+        }
     }
 
     private void SpeedControl()

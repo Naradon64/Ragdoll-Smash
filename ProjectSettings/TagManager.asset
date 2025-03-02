@@ -19,10 +19,10 @@ TagManager:
   - UI
   - whatIsGround
   - whatIsPlayer
-  - 
-  - 
-  - 
-  - 
+  - PlayerWeapon
+  - EnemyWeapon
+  - Item
+  - Enemy
   - 
   - 
   - 

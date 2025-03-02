@@ -1,4 +1,7 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;  // For UI.Text or TextMeshProUGUI if using TMP
+using TMPro;  // For TextMeshPro
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
@@ -12,12 +15,15 @@ public class PlayerCollisionHandler : MonoBehaviour
     public Transform leftHand;
     private PlayerHealth playerHealth; // Reference to PlayerHealth script
     private PlayerAction playerAction; // Reference to PlayerAction to pass held item
+    private Collider[] playerColliders;
+    public TextMeshProUGUI lockedEnemyText;
 
     private void Start()
     {
         // Get the PlayerHealth component from the player
         playerHealth = GetComponent<PlayerHealth>();
         playerAction = GetComponent<PlayerAction>();
+        playerColliders = GetComponentsInChildren<Collider>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -71,19 +77,22 @@ public class PlayerCollisionHandler : MonoBehaviour
         if (rb != null)
         {
             rb.isKinematic = true;
-            
-            Collider itemCollider = item.GetComponent<Collider>();
-            if (itemCollider != null)
-            {
-                // Set the collider to trigger when picking up
-                itemCollider.isTrigger = true; 
-            }
             rb.useGravity = false;
+        }
+
+        // Ignore collision between the player and the item
+        Collider[] itemColliders = item.GetComponentsInChildren<Collider>();
+        foreach (Collider itemCollider in itemColliders)
+        {
+            foreach (Collider playerCollider in playerColliders)
+            {
+                Physics.IgnoreCollision(playerCollider, itemCollider, true);
+            }
         }
 
         // Parent the item to the hand (so it moves with it)
         item.transform.SetParent(hand);
-        item.transform.localPosition = Vector3.zero; 
+        item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
 
         heldItem = item; // Store the held item
@@ -97,11 +106,11 @@ public class PlayerCollisionHandler : MonoBehaviour
     }
 
     private void DropItem()
-    {        
+    {
         if (heldItem != null)
         {
             Debug.Log($"Dropped {heldItem.name}");
-            
+
             // Unparent the item
             heldItem.transform.SetParent(null);
 
@@ -110,13 +119,17 @@ public class PlayerCollisionHandler : MonoBehaviour
             if (rb != null)
             {
                 rb.isKinematic = false;
-
-                Collider itemCollider = heldItem.GetComponent<Collider>();
-                if (itemCollider != null)
-                {
-                    itemCollider.isTrigger = false; // Restore normal collision
-                }
                 rb.useGravity = true;
+            }
+
+            // Restore collision between the player and the item
+            Collider[] itemColliders = heldItem.GetComponentsInChildren<Collider>();
+            foreach (Collider itemCollider in itemColliders)
+            {
+                foreach (Collider playerCollider in playerColliders)
+                {
+                    Physics.IgnoreCollision(playerCollider, itemCollider, false);
+                }
             }
 
             heldItem = null; // Clear the held item
@@ -132,32 +145,95 @@ public class PlayerCollisionHandler : MonoBehaviour
         DropItem();
     }
 
-    public void ForceThrowItem(Vector3 throwVelocity)
+    public void ThrowItem(Vector3 throwForce)
     {
         if (heldItem != null)
         {
-            Debug.Log($"Throwing {heldItem.name} with velocity {throwVelocity}");
+            Debug.Log($"Threw {heldItem.name}");
 
             heldItem.transform.SetParent(null);
-            Rigidbody rb = heldItem.GetComponent<Rigidbody>();
 
+            Rigidbody rb = heldItem.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.isKinematic = false;
                 rb.useGravity = true;
-                Collider itemCollider = heldItem.GetComponent<Collider>();
-                if (itemCollider != null)
-                {
-                    itemCollider.isTrigger = false;
-                }
+            }
 
-                rb.AddForce(throwVelocity * 2.0f, ForceMode.Impulse); // Apply force to throw the item
+            Transform targetEnemy = FindClosestEnemyInFront();
+            if (targetEnemy != null)
+            {
+                Vector3 targetPosition = targetEnemy.position;
+                Vector3 startPosition = heldItem.transform.position;
+
+                // Calculate direction and initial velocity
+                Vector3 direction = (targetPosition - startPosition).normalized;
+                float initialSpeed = throwForce.magnitude * 10.0f; // Adjust multiplier for speed
+
+                // Set initial velocity
+                rb.velocity = direction * initialSpeed;
+
+                // Apply gravity (Rigidbody already has useGravity = true)
+            }
+            else
+            {
+                // If no enemy, just throw forward (as before)
+                rb.AddForce(transform.forward * throwForce.magnitude * 10.0f, ForceMode.Impulse);
+            }
+
+            Collider[] itemColliders = heldItem.GetComponentsInChildren<Collider>();
+            foreach (Collider itemCollider in itemColliders)
+            {
+                foreach (Collider playerCollider in playerColliders)
+                {
+                    Physics.IgnoreCollision(playerCollider, itemCollider, false);
+                }
+                // Start the coroutine to restore collisions after a delay
+                StartCoroutine(RestoreCollision(playerColliders, itemCollider, 0.5f)); // Adjust delay as needed
             }
 
             heldItem = null;
             currentHand = null;
             playerAction.SetHeldItem(null);
         }
+    }
+
+    private IEnumerator RestoreCollision(Collider[] playerColliders, Collider itemCollider, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        foreach (Collider playerCollider in playerColliders)
+        {
+            Physics.IgnoreCollision(playerCollider, itemCollider, false);
+        }
+
+        Debug.Log("Restored collision between player and thrown item.");
+    }
+
+    private Transform FindClosestEnemyInFront()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Transform closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
+        float maxAngle = 45f; // Max angle to consider (only in front of the player)
+
+        foreach (GameObject enemy in enemies)
+        {
+            Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(transform.forward, directionToEnemy); // Angle between forward and enemy
+
+            if (angle < maxAngle) // Only consider enemies within 45 degrees in front
+            {
+                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = enemy.transform;
+                }
+            }
+        }
+
+        return closestEnemy;
     }
 
     private void Update()
@@ -187,5 +263,9 @@ public class PlayerCollisionHandler : MonoBehaviour
                 DropItem();
             }
         }
+
+        Transform targetEnemy = FindClosestEnemyInFront();
+        Debug.Log($"The infront enemy is {targetEnemy}");
+        lockedEnemyText.text = $"Locked Target: {targetEnemy}";
     }
 }

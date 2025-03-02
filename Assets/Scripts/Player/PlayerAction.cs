@@ -9,7 +9,7 @@ public class PlayerAction : MonoBehaviour
 
     private Vector3 prevRightArmPos;
     private Vector3 prevLeftArmPos;
-    private float velocityThreshold = 5.0f; // Adjust based on testing
+    private float velocityThreshold = 3.0f; // Adjust based on testing
 
     private PlayerCollisionHandler playerCollisionHandler;
 
@@ -37,15 +37,15 @@ public class PlayerAction : MonoBehaviour
             // Check if velocity exceeds the threshold and if the arm is swinging downward
             if (heldItem != null)
             {
-                if (rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.5f)
+                if (rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.4f)
                 {
                     Debug.Log($"Right arm swung down fast: {rightArmVelocity}, throwing item.");
-                    playerCollisionHandler.ForceThrowItem(rightArmVelocity);
+                    playerCollisionHandler.ThrowItem(rightArmVelocity);
                 }
-                else if (leftArmVelocity.magnitude > velocityThreshold && leftArmVelocity.y < -0.5f)
+                else if (leftArmVelocity.magnitude > velocityThreshold && leftArmVelocity.y < -0.4f)
                 {
                     Debug.Log($"Left arm swung down fast: {leftArmVelocity}, throwing item.");
-                    playerCollisionHandler.ForceThrowItem(leftArmVelocity);
+                    playerCollisionHandler.ThrowItem(leftArmVelocity);
                 }
             }
         }
