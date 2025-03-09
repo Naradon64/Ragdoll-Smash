@@ -6321,7 +6321,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   orientation: {fileID: 8256285045465818204}
-  rotationSpeed: 10
 --- !u!114 &1304873239107029293
 MonoBehaviour:
   m_ObjectHideFlags: 0

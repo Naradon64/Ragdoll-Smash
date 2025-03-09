@@ -96,10 +96,12 @@ class BodyThread(threading.Thread):
                 self.data = ""
                 i = 0
                 if results.pose_world_landmarks:
-                    self.data = "\n".join(
-                        f"{i}|{lmk.x:.6f}|{lmk.y:.6f}|{lmk.z:.6f}"
-                        for i, lmk in enumerate(results.pose_world_landmarks.landmark)
-                    )
+                    landmarks_to_send = []
+                    for i, lmk in enumerate(results.pose_world_landmarks.landmark):
+                        if i < 23:  # Only send landmarks 0 to 22 (upper body)
+                            landmarks_to_send.append(f"{i}|{lmk.x:.6f}|{lmk.y:.6f}|{lmk.z:.6f}")
+
+                    self.data = "\n".join(landmarks_to_send)
                     self.send_data(self.data)
                     print("send data: ", self.data)
                     

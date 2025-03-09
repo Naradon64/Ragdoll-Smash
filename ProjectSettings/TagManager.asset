@@ -10,6 +10,8 @@ TagManager:
   - RightHand
   - EnemyWeapon
   - PlayerWeapon
+  - Throwable
+  - Movable
   layers:
   - Default
   - TransparentFX
@@ -23,7 +25,7 @@ TagManager:
   - EnemyWeapon
   - Item
   - Enemy
-  - 
+  - Movable
   - 
   - 
   - 

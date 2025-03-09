@@ -35,7 +35,7 @@ public class PlayerAction : MonoBehaviour
             prevLeftArmPos = leftArm.position;
 
             // Check if velocity exceeds the threshold and if the arm is swinging downward
-            if (heldItem != null)
+            if (heldItem != null && heldItem.CompareTag("Throwable"))
             {
                 if (rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.4f)
                 {
