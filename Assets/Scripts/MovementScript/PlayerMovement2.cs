@@ -35,7 +35,7 @@ public class PlayerMovement2 : MonoBehaviour
     // public float rotationSpeed = 10f; // Adjust rotation speed as needed
 
     private Animator animator;
-
+    private float deadZone = 0.1f;
     private void Update()
     {
         // Ground check
@@ -47,6 +47,7 @@ public class PlayerMovement2 : MonoBehaviour
         if (horizontalInput != 0 || verticalInput != 0)
         {
             animator.SetBool("isWalking", true);
+            Debug.Log("works");
         }
         else
         {
@@ -81,6 +82,7 @@ public class PlayerMovement2 : MonoBehaviour
         if (modelSubParent != null)
         {
             animator = modelSubParent.GetComponent<Animator>();
+            Debug.Log("skibidi");
         }
         else
         {
@@ -95,8 +97,12 @@ public class PlayerMovement2 : MonoBehaviour
 
     private void MyInput()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Mathf.Abs(Input.GetAxis("Horizontal")) < deadZone ? 0 : Input.GetAxis("Horizontal");
+        verticalInput = Mathf.Abs(Input.GetAxis("Vertical")) < deadZone ? 0 : Input.GetAxis("Vertical");
+
+        // Update Animator parameters
+        animator.SetFloat("Horizontal", horizontalInput);
+        animator.SetFloat("Vertical", verticalInput);
 
         // when to jump
         if(Input.GetKey(jumpKey) && readyToJump && grounded)

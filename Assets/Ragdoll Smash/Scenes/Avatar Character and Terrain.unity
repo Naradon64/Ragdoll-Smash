@@ -1156,6 +1156,10 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 412486201}
+    - target: {fileID: 8318014016570171197, guid: 7897720cff87c594dbad341737525ce4, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8680323024030641396, guid: 7897720cff87c594dbad341737525ce4, type: 3}
       propertyPath: previewCamera
       value: 

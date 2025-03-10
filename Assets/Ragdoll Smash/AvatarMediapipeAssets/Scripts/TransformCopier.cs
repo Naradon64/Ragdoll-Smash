@@ -12,29 +12,26 @@ public class TransformCopier : MonoBehaviour
     private Dictionary<Transform, Transform> transforms = new Dictionary<Transform, Transform>();
 
     private void Start()
+{
+    // Sync all transforms except the legs (assuming "LeftLeg" and "RightLeg" are the names of the leg bones)
+    Transform[] all = source.GetComponentsInChildren<Transform>();
+    Transform[] alld = destination.GetComponentsInChildren<Transform>();
+    foreach (Transform t in all)
     {
-        if (source.name == destination.name)
+        if (t.GetComponent<SkinnedMeshRenderer>() != null || t.name.Contains("Leg")) continue; // Exclude legs
+        Transform match = null;
+        foreach (Transform t1 in alld)
         {
-            destination.name += "(dst)";
-        }
-
-        Transform[] all = source.GetComponentsInChildren<Transform>();
-        Transform[] alld = destination.GetComponentsInChildren<Transform>();
-        foreach (Transform t in all)
-        {
-            if (t.GetComponent<SkinnedMeshRenderer>() != null) continue;
-            Transform match = null;
-            foreach(Transform t1 in alld)
+            if (t.name == t1.name)
             {
-                if (t.name == t1.name)
-                {
-                    match = t1;
-                    break;
-                }
+                match = t1;
+                break;
             }
-            transforms.Add(t, match);
         }
+        transforms.Add(t, match);
     }
+}
+
 
     private void LateUpdate()
     {
