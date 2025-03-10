@@ -34,6 +34,8 @@ public class PlayerMovement2 : MonoBehaviour
     // [Header("Rotation")]
     // public float rotationSpeed = 10f; // Adjust rotation speed as needed
 
+    private Animator animator;
+
     private void Update()
     {
         // Ground check
@@ -42,6 +44,14 @@ public class PlayerMovement2 : MonoBehaviour
         MyInput();
 
         SpeedControl();
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
 
         // Adjust drag based on whether the player is grounded or not
         if (grounded)
@@ -66,6 +76,21 @@ public class PlayerMovement2 : MonoBehaviour
         rb.freezeRotation = true;
 
         readyToJump = true;
+        Transform modelSubParent = transform.Find("pico_chan_chr_pico_00");
+
+        if (modelSubParent != null)
+        {
+            animator = modelSubParent.GetComponent<Animator>();
+        }
+        else
+        {
+            Debug.LogError("Model sub-parent 'pico_chan_chr_pico_00' not found!");
+        }
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator not found on 'pico_chan_chr_pico_00'!");
+        }
     }
 
     private void MyInput()

@@ -132,7 +132,7 @@ public class PlayerCollisionHandler : MonoBehaviour
         Rigidbody rb = box.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
             rb.useGravity = false;
@@ -290,7 +290,7 @@ public class PlayerCollisionHandler : MonoBehaviour
                 float initialSpeed = throwForce.magnitude * 10.0f; // Adjust multiplier for speed
 
                 // Set initial velocity
-                rb.velocity = direction * initialSpeed;
+                rb.linearVelocity = direction * initialSpeed;
 
                 // Apply gravity (Rigidbody already has useGravity = true)
             }
