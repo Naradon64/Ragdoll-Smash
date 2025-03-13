@@ -2,6 +2,13 @@ fileFormatVersion: 2
 guid: 282cde1477c9b9043b439d1e6f3fde0c
 labels:
 - Animation
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154271
+  packageName: Basic Motions FREE
+  packageVersion: 2.3.3
+  assetPath: Assets/Kevin Iglesias/Human Animations/Animations/Female/Movement/HumanF@Fall01.fbx
+  uploadId: 733977
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -18,8 +25,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -47,7 +52,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
@@ -948,8 +953,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 1841c298173cdad4db8df8602c8f1c8d,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 1841c298173cdad4db8df8602c8f1c8d, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
@@ -961,10 +965,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 154271
-  packageName: Basic Motions FREE
-  packageVersion: 2.3.3
-  assetPath: Assets/Kevin Iglesias/Human Animations/Animations/Female/Movement/HumanF@Fall01.fbx
-  uploadId: 733977
