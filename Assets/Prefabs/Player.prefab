@@ -6278,7 +6278,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3782066897193668758}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -6309,10 +6309,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271503dae194d6e4193913df9022e4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 7
-  groundDrag: 5
-  airDrag: 2
-  jumpForce: 10
+  moveSpeed: 9
+  groundDrag: 6
+  airDrag: 3
+  jumpForce: 20
   jumpCooldown: 0.25
   airMultiplier: 0.4
   jumpKey: 32
@@ -6320,6 +6320,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  rotationSpeed: 10
   orientation: {fileID: 8256285045465818204}
 --- !u!114 &1304873239107029293
 MonoBehaviour:
@@ -6336,6 +6337,7 @@ MonoBehaviour:
   rightHand: {fileID: 1160109614415586670}
   leftHand: {fileID: 4953046876503954826}
   lockedEnemyText: {fileID: 0}
+  orientation: {fileID: 8256285045465818204}
 --- !u!114 &8004567151847325371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11350,6 +11352,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 3055156d09f94c144a856aba1511f220, type: 2}
     - target: {fileID: 5951478778442215736, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
       propertyPath: m_Layer
       value: 7

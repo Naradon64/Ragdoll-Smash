@@ -98,7 +98,7 @@ class BodyThread(threading.Thread):
                 if results.pose_world_landmarks:
                     landmarks_to_send = []
                     for i, lmk in enumerate(results.pose_world_landmarks.landmark):
-                        if i < 23:  # Only send landmarks 0 to 22 (upper body)
+                        if i < 25:  # Only send landmarks 0 to 24 (upper body)
                             landmarks_to_send.append(f"{i}|{lmk.x:.6f}|{lmk.y:.6f}|{lmk.z:.6f}")
 
                     self.data = "\n".join(landmarks_to_send)

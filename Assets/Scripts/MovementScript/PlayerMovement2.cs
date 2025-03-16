@@ -19,6 +19,9 @@ public class PlayerMovement2 : MonoBehaviour
     public LayerMask whatIsGround;
     private bool grounded;
 
+    [Header("Rotation")]
+    public float rotationSpeed = 10f; // Control rotation speed
+
     public Transform orientation;
     private float horizontalInput;
     private float verticalInput;
@@ -77,6 +80,9 @@ public class PlayerMovement2 : MonoBehaviour
 
     // Apply correct drag
     rb.linearDamping = grounded ? groundDrag : airDrag;
+
+    // Handle Rotation
+    HandleRotation();
 }
 
 
@@ -95,7 +101,7 @@ public class PlayerMovement2 : MonoBehaviour
         animator.SetFloat("Vertical", verticalInput);
 
         // Jump logic
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetButtonDown("Jump") && readyToJump && grounded)
         {
             readyToJump = false;
             Jump();
@@ -177,5 +183,22 @@ private bool IsGrounded()
 
     return hit;
 }
+
+    private void HandleRotation()
+    {
+        // If there's movement input, rotate the player towards the movement direction
+        if (horizontalInput != 0 || verticalInput != 0)
+        {
+            // Calculate the direction the player should face based on movement
+            Vector3 directionToFace = moveDirection.normalized;
+
+            // If the movement is not zero, rotate the player smoothly towards the direction of movement
+            if (directionToFace != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToFace); // Create a rotation towards the movement direction
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); // Smooth rotation towards the target
+            }
+        }
+    }
 
 }

@@ -23,6 +23,9 @@ public class PlayerCollisionHandler : MonoBehaviour
     private bool leftHandInsideBox = false;
     private bool boxPickedUp = false;
     private Vector3 boxOffset; // Store the relative offset between the hands and hold point
+    private FixedJoint rightHandJoint;
+    private FixedJoint leftHandJoint;
+    public Transform orientation;
 
     private void Start()
     {
@@ -30,6 +33,8 @@ public class PlayerCollisionHandler : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
         playerAction = GetComponent<PlayerAction>();
         playerColliders = GetComponentsInChildren<Collider>();
+
+        orientation = transform;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,68 +59,78 @@ public class PlayerCollisionHandler : MonoBehaviour
                 PickupItem(other.gameObject, chosenHand);
             }
         }
-        else if (other.CompareTag("Movable") && !boxPickedUp) // Only check if not already picked up
-        {
-            if (IsHandTouching(rightHand, other))
-            {
-                rightHandInsideBox = true;
-                boxCollider = other;
-            }
-            if (IsHandTouching(leftHand, other))
-            {
-                leftHandInsideBox = true;
-                boxCollider = other;
-            }
 
-            if (rightHandInsideBox && leftHandInsideBox)
+        if (other.CompareTag("Movable"))
+        {
+            if (heldItem == null && currentCooldown <= 0) // ADDED COOLDOWN CHECK HERE
             {
-                PickupBox(boxCollider.gameObject);
+                Debug.Log($"OnTriggerEnter: Movable object {other.gameObject.name} entered.");
+
+                if (IsHandTouching(rightHand, other))
+                {
+                    Debug.Log("OnTriggerEnter: Right hand touching.");
+                    rightHandInsideBox = true;
+                    boxCollider = other;
+                    Debug.Log($"OnTriggerEnter: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
+                    if (leftHandInsideBox)
+                    {
+                        Debug.Log("OnTriggerEnter: Both hands inside, grabbing box.");
+                        GrabBox(other.gameObject);
+                    }
+                }
+                if (IsHandTouching(leftHand, other))
+                {
+                    Debug.Log("OnTriggerEnter: Left hand touching.");
+                    leftHandInsideBox = true;
+                    boxCollider = other;
+                    Debug.Log($"OnTriggerEnter: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
+                    if (rightHandInsideBox)
+                    {
+                        Debug.Log("OnTriggerEnter: Both hands inside, grabbing box.");
+                        GrabBox(other.gameObject);
+                    }
+                }
             }
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Movable") && !boxPickedUp) // Only check if not already picked up
-        {
-            if (!IsHandTouching(rightHand, other))
-            {
-                rightHandInsideBox = false;
-                if (leftHandInsideBox)
-                {
-                    boxCollider = other;
-                }
-                else
-                {
-                    boxCollider = null;
-                }
-            }
-            if (!IsHandTouching(leftHand, other))
-            {
-                leftHandInsideBox = false;
-                if (rightHandInsideBox)
-                {
-                    boxCollider = other;
-                }
-                else
-                {
-                    boxCollider = null;
-                }
-            }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("Movable"))
+    //     {
+    //         Debug.Log($"OnTriggerExit: Movable object {other.gameObject.name} exited.");
 
-            if (boxCollider != null && boxCollider.gameObject == other.gameObject)
-            {
-                boxCollider = null;
-            }
-        }
-    }
+    //         if (!IsHandTouching(rightHand, other))
+    //         {
+    //             Debug.Log("OnTriggerExit: Right hand not touching.");
+    //             rightHandInsideBox = false;
+    //             Debug.Log($"OnTriggerExit: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
+    //             if (!leftHandInsideBox)
+    //             {
+    //                 Debug.Log("OnTriggerExit: Both hands outside, releasing box.");
+    //                 ReleaseBox();
+    //             }
+    //         }
+    //         if (!IsHandTouching(leftHand, other))
+    //         {
+    //             Debug.Log("OnTriggerExit: Left hand not touching.");
+    //             leftHandInsideBox = false;
+    //             Debug.Log($"OnTriggerExit: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
+    //             if (!rightHandInsideBox)
+    //             {
+    //                 Debug.Log("OnTriggerExit: Both hands outside, releasing box.");
+    //                 ReleaseBox();
+    //             }
+    //         }
+    //     }
+    // }
 
     private bool IsHandTouching(Transform hand, Collider other)
     {
         Collider[] handColliders = hand.GetComponentsInChildren<Collider>();
         foreach (Collider handCollider in handColliders)
         {
-            if (handCollider.bounds.Intersects(other.bounds))
+            if (handCollider.isTrigger && handCollider.bounds.Intersects(other.bounds))
             {
                 return true;
             }
@@ -123,77 +138,117 @@ public class PlayerCollisionHandler : MonoBehaviour
         return false;
     }
 
-    private void PickupBox(GameObject box)
+    private void GrabBox(GameObject box)
     {
-        if (heldItem != null) return;
-
-        Debug.Log($"Picked up box {box.name} with both hands.");
+        if (boxPickedUp) return;
 
         Rigidbody rb = box.GetComponent<Rigidbody>();
-        if (rb != null)
+        if (rb == null)
         {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true;
-            rb.useGravity = false;
+            rb = box.AddComponent<Rigidbody>();
         }
 
-        Collider[] itemColliders = box.GetComponentsInChildren<Collider>();
-        foreach (Collider itemCollider in itemColliders)
+        // Reduce mass and add damping to prevent strong collisions
+        rb.mass = 0.5f;  // Adjust as needed
+        rb.linearDamping = 5f;  // Reduces sudden movement
+        rb.angularDamping = 5f;  // Reduces unwanted rotation
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        if (rightHandJoint == null)
         {
-            foreach (Collider playerCollider in playerColliders)
-            {
-                Physics.IgnoreCollision(playerCollider, itemCollider, true);
-            }
+            rightHandJoint = rightHand.gameObject.AddComponent<FixedJoint>();
+            rightHandJoint.connectedBody = rb;
         }
 
-        // Calculate the average position of the two hands
-        Vector3 averageHandPosition = (rightHand.position + leftHand.position) / 2f;
-        Quaternion averageHandRotation = Quaternion.LookRotation(rightHand.position - leftHand.position);
-
-        // Calculate the bounding box size of the object
-        Bounds bounds = new Bounds(box.transform.position, Vector3.zero);
-        foreach (Collider collider in itemColliders)
+        if (leftHandJoint == null)
         {
-            bounds.Encapsulate(collider.bounds);
+            leftHandJoint = leftHand.gameObject.AddComponent<FixedJoint>();
+            leftHandJoint.connectedBody = rb;
         }
-
-        // Calculate a dynamic offset based on the object's size
-        boxOffset = bounds.size / 2f; // Adjust the divisor for desired offset
-        boxOffset.z = Mathf.Abs(boxOffset.z);
-
-        // Parent the box to the player and apply the offset
-        box.transform.SetParent(transform);
 
         heldItem = box;
-        currentHand = null;
+        boxPickedUp = true;
+
+        // Start cooldown after picking up the item
         currentCooldown = pickupCooldown;
-        playerAction.SetHeldItem(box);
+    }
+
+   private void ReleaseBox()
+    {
+        Debug.Log("ReleaseBox: Releasing box.");
+
+        if (rightHandJoint != null)
+        {
+            Destroy(rightHandJoint);
+            rightHandJoint = null;
+        }
+        if (leftHandJoint != null)
+        {
+            Destroy(leftHandJoint);
+            leftHandJoint = null;
+        }
+
+        // Remove Rigidbody from hands if it exists
+        Rigidbody rightHandRb = rightHand.GetComponent<Rigidbody>();
+        if (rightHandRb != null)
+        {
+            Destroy(rightHandRb);
+        }
+
+        Rigidbody leftHandRb = leftHand.GetComponent<Rigidbody>();
+        if (leftHandRb != null)
+        {
+            Destroy(leftHandRb);
+        }
+
+        boxPickedUp = false;
+        heldItem = null;
 
         rightHandInsideBox = false;
         leftHandInsideBox = false;
+
+        playerAction.SetHeldItem(null);
+
+        if (boxCollider != null)
+        {
+            Rigidbody rb = boxCollider.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.mass = 1f;  // Restore default mass
+                rb.linearDamping = 0f;
+                rb.angularDamping = 0.05f;
+                rb.isKinematic = false;
+                rb.useGravity = true;
+            }
+        }
+
+        if (boxCollider != null)
+        {
+            StartCoroutine(ReEnableBoxCollisions(boxCollider, 0.1f));
+        }
         boxCollider = null;
-        boxPickedUp = true;
 
-        UpdateBoxPosition(); // Initial position update
+        Debug.Log($"ReleaseBox: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}, boxCollider = {boxCollider}");
     }
 
-    private void UpdateBoxPosition()
-{
-    if (heldItem != null && heldItem.CompareTag("Movable"))
+    private IEnumerator ReEnableBoxCollisions(Collider boxCollider, float delay)
     {
-        Vector3 averageHandPosition = (rightHand.position + leftHand.position) / 2f;
-        Quaternion averageHandRotation = Quaternion.LookRotation(rightHand.position - leftHand.position);
+        yield return new WaitForSeconds(delay);
 
-        // Position the box in front of the hands, using the box's local forward direction
-        heldItem.transform.position = averageHandPosition + heldItem.transform.forward * boxOffset.z;
-        heldItem.transform.rotation = averageHandRotation;
+        // Re-enable collisions between the player and the box
+        Collider[] playerColliders = GetComponentsInChildren<Collider>();
+        foreach (Collider playerCollider in playerColliders)
+        {
+            Physics.IgnoreCollision(playerCollider, boxCollider, false);
+        }
+        Debug.Log("Re-enabled box collisions with player.");
     }
-}
 
     private void PickupItem(GameObject item, Transform hand)
     {
         Debug.Log($"{hand.name} picked up {item.name}");
+        Debug.Log($"PickupItem: currentCooldown = {currentCooldown}, heldItem = {heldItem}"); // ADDED DEBUG
 
         // Disable physics so the item doesn’t fall
         Rigidbody rb = item.GetComponent<Rigidbody>();
@@ -228,7 +283,7 @@ public class PlayerCollisionHandler : MonoBehaviour
         playerAction.SetHeldItem(item);
     }
 
-     private void DropItem()
+    private void DropItem()
     {
         if (heldItem != null)
         {
@@ -336,6 +391,9 @@ public class PlayerCollisionHandler : MonoBehaviour
         float closestDistance = Mathf.Infinity;
         float maxAngle = 45f; // Max angle to consider (only in front of the player)
 
+        // Ensure the orientation is updating based on movement
+        Vector3 forwardDirection = orientation.forward; // Use orientation.forward to align with player rotation
+
         foreach (GameObject enemy in enemies)
         {
             Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
@@ -369,24 +427,27 @@ public class PlayerCollisionHandler : MonoBehaviour
 
         if (heldItem != null)
         {
-            if (heldItem.CompareTag("Movable"))
+            if (heldItem != null && heldItem.CompareTag("Movable"))
             {
-                if(Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetButton("Fire1") || Input.GetButton("Fire2"))
                 {
-                    DropItem();
+                    ReleaseBox();
                 }
             }
-            else if (currentHand == rightHand && Input.GetKeyDown(KeyCode.E))
+            else if (currentHand == rightHand && Input.GetButton("Fire1"))
             {
                 DropItem();
             }
-            else if (currentHand == leftHand && Input.GetKeyDown(KeyCode.Q))
+            else if (currentHand == leftHand && Input.GetButton("Fire2"))
             {
                 DropItem();
             }
         }
 
-        UpdateBoxPosition(); // Update the box position every frame
+        // if (heldItem == null)
+        // {
+        //     Debug.Log($"Update: heldItem is null, currentCooldown = {currentCooldown}"); // ADDED DEBUG
+        // }
 
         Transform targetEnemy = FindClosestEnemyInFront();
         // Debug.Log($"The infront enemy is {targetEnemy}");
