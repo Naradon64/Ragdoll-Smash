@@ -2587,6 +2587,7 @@ MonoBehaviour:
   animationSpeedMultiplier: 0.6
   player: {fileID: 0}
   swordCollider: {fileID: 2221875977029936870}
+  door: {fileID: 0}
 --- !u!114 &1745761427872055878
 MonoBehaviour:
   m_ObjectHideFlags: 0

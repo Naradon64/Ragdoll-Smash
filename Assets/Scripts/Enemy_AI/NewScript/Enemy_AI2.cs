@@ -29,6 +29,9 @@ public class Enemy_AI2 : MonoBehaviour
     private Rigidbody rb;  // Rigidbody for applying force during knockback
     private bool isKnockedBack = false; // Flag to check if knockback is active
     private Vector3 knockbackDirection; // Direction for the knockback force
+
+    [Header("Door Reference")]
+    public GameObject door;  // Reference to the door object
     
 
     void Start()
@@ -52,6 +55,12 @@ public class Enemy_AI2 : MonoBehaviour
         {
             swordCollider.enabled = false;
         }
+
+        // If no door is assigned, log a warning
+        if (door == null)
+        {
+            Debug.LogWarning("No door assigned to Enemy_AI2 script!");
+        }
     }
 
     void Update()
@@ -61,6 +70,7 @@ public class Enemy_AI2 : MonoBehaviour
         {
             // Stop all actions if the enemy is dead
             StopAllActions();
+            HandleEnemyDeath();
             return;
         }
 
@@ -229,5 +239,15 @@ private void RestoreMovement()
         Debug.LogWarning($"{gameObject.name} is not on a valid NavMesh! Cannot re-enable NavMeshAgent.");
     }
 }
+
+    // Handle enemy death and door disappearance
+    void HandleEnemyDeath()
+    {
+        if (door != null)
+        {
+            door.SetActive(false); // Make the door disappear when the enemy dies
+            Debug.Log("The door has disappeared.");
+        }
+    }
 
 }

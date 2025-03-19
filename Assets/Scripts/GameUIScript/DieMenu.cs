@@ -5,6 +5,7 @@ public class DieMenu : MonoBehaviour
 {
     public GameObject dieMenu;
     public GameObject healthBar;
+    public GameObject lockEnemyText;
     public static bool isDie;
     public bool cursorLocked = true; // Track cursor lock state
 
@@ -24,6 +25,7 @@ public class DieMenu : MonoBehaviour
     {
         dieMenu.SetActive(true);
         healthBar.SetActive(false);
+        lockEnemyText.SetActive(false);
         Time.timeScale = 0f;
         isDie = true;
         Cursor.lockState = CursorLockMode.None; // Unlock cursor
@@ -36,6 +38,7 @@ public class DieMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(1); // scene from project profile
         dieMenu.SetActive(false);
         healthBar.SetActive(true);
+        lockEnemyText.SetActive(true);
         Time.timeScale = 1f;
         isDie = false;
         Cursor.lockState = CursorLockMode.Locked;

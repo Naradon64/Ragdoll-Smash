@@ -19,8 +19,8 @@ public class PlayerMovement2 : MonoBehaviour
     public LayerMask whatIsGround;
     private bool grounded;
 
-    [Header("Rotation")]
-    public float rotationSpeed = 10f; // Control rotation speed
+    // [Header("Rotation")]
+    // public float rotationSpeed = 10f; // Control rotation speed
 
     public Transform orientation;
     private float horizontalInput;
@@ -30,6 +30,7 @@ public class PlayerMovement2 : MonoBehaviour
 
     private Animator animator;
     private float deadZone = 0.1f;
+    public GameObject model;
 
     private void Start()
     {
@@ -37,15 +38,7 @@ public class PlayerMovement2 : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
 
-        Transform modelSubParent = transform.Find("pico_chan_chr_pico_00");
-        if (modelSubParent != null)
-        {
-            animator = modelSubParent.GetComponent<Animator>();
-        }
-        else
-        {
-            Debug.LogError("Model sub-parent 'pico_chan_chr_pico_00' not found!");
-        }
+        animator = model.GetComponent<Animator>();
 
         if (animator == null)
         {
@@ -81,8 +74,8 @@ public class PlayerMovement2 : MonoBehaviour
     // Apply correct drag
     rb.linearDamping = grounded ? groundDrag : airDrag;
 
-    // Handle Rotation
-    HandleRotation();
+    // // Handle Rotation
+    // HandleRotation();
 }
 
 
@@ -184,21 +177,21 @@ private bool IsGrounded()
     return hit;
 }
 
-    private void HandleRotation()
-    {
-        // If there's movement input, rotate the player towards the movement direction
-        if (horizontalInput != 0 || verticalInput != 0)
-        {
-            // Calculate the direction the player should face based on movement
-            Vector3 directionToFace = moveDirection.normalized;
+    // private void HandleRotation()
+    // {
+    //     // If there's movement input, rotate the player towards the movement direction
+    //     if (horizontalInput != 0 || verticalInput != 0)
+    //     {
+    //         // Calculate the direction the player should face based on movement
+    //         Vector3 directionToFace = moveDirection.normalized;
 
-            // If the movement is not zero, rotate the player smoothly towards the direction of movement
-            if (directionToFace != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(directionToFace); // Create a rotation towards the movement direction
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); // Smooth rotation towards the target
-            }
-        }
-    }
+    //         // If the movement is not zero, rotate the player smoothly towards the direction of movement
+    //         if (directionToFace != Vector3.zero)
+    //         {
+    //             Quaternion targetRotation = Quaternion.LookRotation(directionToFace); // Create a rotation towards the movement direction
+    //             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); // Smooth rotation towards the target
+    //         }
+    //     }
+    // }
 
 }

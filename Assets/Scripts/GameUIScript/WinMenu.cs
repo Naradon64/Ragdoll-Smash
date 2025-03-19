@@ -1,72 +1,45 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class WinMenu : MonoBehaviour
 {
-    public GameObject pauseMenu;
+    public GameObject winMenu;
     public GameObject healthBar;
     public GameObject lockEnemyText;
-    public static bool isPaused;
+    public static bool isDie;
     public bool cursorLocked = true; // Track cursor lock state
 
     void Start()
     {
-        pauseMenu.SetActive(false);
+        winMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked; // Lock cursor initially
         Cursor.visible = false; // Hide cursor initially
     }
 
     void Update()
     {
-        if(!DieMenu.isDie) // Use the static reference instead of dieMenu.isDied
-        {
-            if(Input.GetKeyDown(KeyCode.Escape))
-            {
-                if(isPaused)
-                {
-                    ResumeGame();
-                }
-                else
-                {
-                    PauseGame();
-                }
-            }
-        }
+        
     }
 
-    public void PauseGame()
+    public void Win()
     {
-        pauseMenu.SetActive(true);
+        winMenu.SetActive(true);
         healthBar.SetActive(false);
         lockEnemyText.SetActive(false);
         Time.timeScale = 0f;
-        isPaused = true;
         Cursor.lockState = CursorLockMode.None; // Unlock cursor
         Cursor.visible = true; // Make cursor visible
         cursorLocked = false;
     }
 
-    public void ResumeGame()
-    {
-        pauseMenu.SetActive(false);
-        healthBar.SetActive(true);
-        lockEnemyText.SetActive(true);
-        Time.timeScale = 1f;
-        isPaused = false;        
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        
-    }
-
     public void RestartGame()
     {
         SceneManager.LoadSceneAsync(1); // scene from project profile
-        pauseMenu.SetActive(false);
+        winMenu.SetActive(false);
         healthBar.SetActive(true);
         lockEnemyText.SetActive(true);
         Time.timeScale = 1f;
-        isPaused = false;
-        DieMenu.isDie = false; // Reset die state
+        isDie = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -75,7 +48,6 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadSceneAsync(0); // scene from project profile
-        isPaused = false;
-        DieMenu.isDie = false; // Reset die state
+        isDie = false;
     }
 }

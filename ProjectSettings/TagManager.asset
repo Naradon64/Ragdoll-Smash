@@ -12,6 +12,8 @@ TagManager:
   - PlayerWeapon
   - Throwable
   - Movable
+  - Door
+  - WinFlag
   layers:
   - Default
   - TransparentFX

@@ -26,15 +26,17 @@ public class PlayerCollisionHandler : MonoBehaviour
     private FixedJoint rightHandJoint;
     private FixedJoint leftHandJoint;
     public Transform orientation;
+    public GameObject playerRoot; // Assign the Player GameObject in the Inspector
+    private WinMenu winMenu; // Reference to WinMenu
 
     private void Start()
     {
-        // Get the PlayerHealth component from the player
         playerHealth = GetComponent<PlayerHealth>();
         playerAction = GetComponent<PlayerAction>();
-        playerColliders = GetComponentsInChildren<Collider>();
 
-        orientation = transform;
+        playerColliders = playerRoot.GetComponentsInChildren<Collider>();
+
+        Debug.Log($"Player colliders found: {playerColliders.Length}");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -92,38 +94,28 @@ public class PlayerCollisionHandler : MonoBehaviour
                 }
             }
         }
+
+        // Check if the player collides with the "WinFlag" to trigger the win menu
+        if (other.CompareTag("WinFlag"))
+        {
+            Debug.Log("WinFlag triggered! Displaying win menu...");
+            DisplayWinMenu();  // Call the function to display the win menu
+        }
     }
 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.CompareTag("Movable"))
-    //     {
-    //         Debug.Log($"OnTriggerExit: Movable object {other.gameObject.name} exited.");
-
-    //         if (!IsHandTouching(rightHand, other))
-    //         {
-    //             Debug.Log("OnTriggerExit: Right hand not touching.");
-    //             rightHandInsideBox = false;
-    //             Debug.Log($"OnTriggerExit: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
-    //             if (!leftHandInsideBox)
-    //             {
-    //                 Debug.Log("OnTriggerExit: Both hands outside, releasing box.");
-    //                 ReleaseBox();
-    //             }
-    //         }
-    //         if (!IsHandTouching(leftHand, other))
-    //         {
-    //             Debug.Log("OnTriggerExit: Left hand not touching.");
-    //             leftHandInsideBox = false;
-    //             Debug.Log($"OnTriggerExit: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}");
-    //             if (!rightHandInsideBox)
-    //             {
-    //                 Debug.Log("OnTriggerExit: Both hands outside, releasing box.");
-    //                 ReleaseBox();
-    //             }
-    //         }
-    //     }
-    // }
+    // Function to display the win menu
+    private void DisplayWinMenu()
+    {
+        winMenu = FindFirstObjectByType<WinMenu>();
+        if (winMenu != null)
+        {
+            winMenu.Win();
+        }
+        else
+        {
+            Debug.LogError("WinMenu UI element not found!");
+        }
+    }
 
     private bool IsHandTouching(Transform hand, Collider other)
     {
@@ -271,7 +263,24 @@ public class PlayerCollisionHandler : MonoBehaviour
         // Parent the item to the hand (so it moves with it)
         item.transform.SetParent(hand);
         item.transform.localPosition = Vector3.zero;
-        item.transform.localRotation = Quaternion.identity;
+
+        // If the item is tagged as "PlayerWeapon", apply a local rotation fix
+        if (item.CompareTag("PlayerWeapon"))
+        {
+            if (hand == leftHand)
+            {
+                item.transform.localRotation = Quaternion.Euler(180f, 0f, 0f); // Adjust the rotation here if needed
+            }
+            else
+            {
+                item.transform.localRotation = Quaternion.identity; // Reset rotation for the right hand
+            }
+        }
+        else
+        {
+            // If it's not a "PlayerWeapon", leave the rotation unchanged
+            item.transform.localRotation = Quaternion.identity;
+        }
 
         heldItem = item; // Store the held item
         currentHand = hand; // Save which hand picked it up
@@ -314,11 +323,6 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
     }
 
-    public void ForceDropItem()
-    {
-        DropItem();
-    }
-
     public void ThrowItem(Vector3 throwForce)
     {
         if (heldItem != null)
@@ -342,7 +346,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 
                 // Calculate direction and initial velocity
                 Vector3 direction = (targetPosition - startPosition).normalized;
-                float initialSpeed = throwForce.magnitude * 10.0f; // Adjust multiplier for speed
+                float initialSpeed = throwForce.magnitude * 1.0f; // Adjust multiplier for speed
 
                 // Set initial velocity
                 rb.linearVelocity = direction * initialSpeed;
@@ -352,7 +356,7 @@ public class PlayerCollisionHandler : MonoBehaviour
             else
             {
                 // If no enemy, just throw forward (as before)
-                rb.AddForce(transform.forward * throwForce.magnitude * 10.0f, ForceMode.Impulse);
+                rb.AddForce(transform.forward * throwForce.magnitude * 1.0f, ForceMode.Impulse);
             }
 
             Collider[] itemColliders = heldItem.GetComponentsInChildren<Collider>();

@@ -69,7 +69,7 @@ class BodyThread(threading.Thread):
                 # Fetch stuff from the capture thread
                 ret = capture.ret
                 image = capture.frame
-                                
+                                                
                 # Image transformations and stuff
                 image = cv2.flip(image, 1)
                 image.flags.writeable = global_vars.DEBUG
@@ -86,9 +86,9 @@ class BodyThread(threading.Thread):
                         
                     if results.pose_landmarks:
                         mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS, 
-                                                mp_drawing.DrawingSpec(color=(255, 100, 0), thickness=2, circle_radius=4),
-                                                mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2),
-                                                )
+                                                    mp_drawing.DrawingSpec(color=(255, 100, 0), thickness=2, circle_radius=4),
+                                                    mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2, circle_radius=2),
+                                                    )
                     cv2.imshow('Body Tracking', image)
                     cv2.waitKey(3)
 
@@ -104,7 +104,14 @@ class BodyThread(threading.Thread):
                     self.data = "\n".join(landmarks_to_send)
                     self.send_data(self.data)
                     print("send data: ", self.data)
+                else:
+                    # No landmarks detected, send all zeros
+                    zero_landmarks = [f"{i}|0.000000|0.000000|0.000000" for i in range(25)]
+                    self.data = "\n".join(zero_landmarks)
+                    self.send_data(self.data)
+                    print("send data all 0: ", self.data)
                     
+
         self.pipe.close()
         capture.cap.release()
         cv2.destroyAllWindows()
@@ -116,7 +123,7 @@ class BodyThread(threading.Thread):
             self.client.start()
         else:
             print("Using Pipes for interprocess communication (not supported on OSX or Linux).")
-        pass      
+        pass         
 
     def send_data(self,message):
         if not global_vars.USE_LEGACY_PIPES:
@@ -135,10 +142,9 @@ class BodyThread(threading.Thread):
             if self.pipe != None:
                 try:     
                     s = self.data.encode('utf-8') 
-                    self.pipe.write(struct.pack('I', len(s)) + s)   
-                    self.pipe.seek(0)    
-                except Exception as ex:  
+                    self.pipe.write(struct.pack('I', len(s)) + s)     
+                    self.pipe.seek(0)     
+                except Exception as ex:     
                     print("Failed to write to pipe. Is the unity project open?")
                     self.pipe= None
         pass
-                        

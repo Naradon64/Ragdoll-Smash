@@ -9,6 +9,7 @@ public class Avatar : MonoBehaviour
     public LayerMask ground;
     public bool footTracking = true;
     public float footGroundOffset = .1f;
+
     [Header("Calibration")]
     public bool useCalibrationData = false;
     public PersistentCalibrationData calibrationData;
@@ -22,7 +23,7 @@ public class Avatar : MonoBehaviour
     private Quaternion targetRot;
 
     private Dictionary<HumanBodyBones, CalibrationData> parentCalibrationData = new Dictionary<HumanBodyBones, CalibrationData>();
-    private CalibrationData spineUpDown, hipsTwist,chest,head;
+    private CalibrationData spineUpDown, hipsTwist, chest, head;
 
     private void Start()
     {
@@ -60,6 +61,7 @@ public class Avatar : MonoBehaviour
         animator.enabled = false; // disable animator to stop interference.
         Calibrated = true;
     }
+
     public void Calibrate()
     {
         // Here we store the values of variables required to do the correct rotations at runtime.
@@ -132,9 +134,10 @@ public class Avatar : MonoBehaviour
 
         calibrationData.Dirty();
 
-        print("Completed storing calibration data "+calibrationData.name);
+        print("Completed storing calibration data " + calibrationData.name);
     }
-    private void AddCalibration(HumanBodyBones parent, HumanBodyBones child, Transform trackParent,Transform trackChild)
+
+    private void AddCalibration(HumanBodyBones parent, HumanBodyBones child, Transform trackParent, Transform trackChild)
     {
         parentCalibrationData.Add(parent,
             new CalibrationData(animator.transform, animator.GetBoneTransform(parent), animator.GetBoneTransform(child),
@@ -144,61 +147,63 @@ public class Avatar : MonoBehaviour
     private void Update()
     {
         // Adjust the vertical position of the avatar to keep it approximately grounded.
-        if(parentCalibrationData.Count > 0)
+        if (parentCalibrationData.Count > 0)
         {
             float displacement = 0;
             RaycastHit h1;
-            if (Physics.Raycast(animator.GetBoneTransform(HumanBodyBones.LeftFoot).position, Vector3.down, out h1, 100f, ground, QueryTriggerInteraction.Ignore)){
+            if (Physics.Raycast(animator.GetBoneTransform(HumanBodyBones.LeftFoot).position, Vector3.down, out h1, 100f, ground, QueryTriggerInteraction.Ignore))
+            {
                 displacement = (h1.point - animator.GetBoneTransform(HumanBodyBones.LeftFoot).position).y;
             }
-            if (Physics.Raycast(animator.GetBoneTransform(HumanBodyBones.RightFoot).position, Vector3.down, out h1, 100f, ground, QueryTriggerInteraction.Ignore)){
+            if (Physics.Raycast(animator.GetBoneTransform(HumanBodyBones.RightFoot).position, Vector3.down, out h1, 100f, ground, QueryTriggerInteraction.Ignore))
+            {
                 float displacement2 = (h1.point - animator.GetBoneTransform(HumanBodyBones.RightFoot).position).y;
                 if (Mathf.Abs(displacement2) < Mathf.Abs(displacement))
                 {
                     displacement = displacement2;
                 }
             }
-            transform.position = Vector3.Lerp(transform.position,initialPosition+ Vector3.up * displacement + Vector3.up * footGroundOffset,
-                Time.deltaTime*5f);
+            transform.position = Vector3.Lerp(transform.position, initialPosition + Vector3.up * displacement + Vector3.up * footGroundOffset,
+                Time.deltaTime * 5f);
         }
 
-        // Compute the new rotations for each limbs of the avatar using the calibration datas we created before.
-        foreach(var i in parentCalibrationData)
+        // Compute the new rotations for each limb of the avatar using the calibration data
+        foreach (var i in parentCalibrationData)
         {
             Quaternion deltaRotTracked = Quaternion.FromToRotation(i.Value.initialDir, i.Value.CurrentDirection);
             i.Value.parent.rotation = deltaRotTracked * i.Value.initialRotation;
         }
 
-        // Deal with spine chain as a special case.
-        if(parentCalibrationData.Count > 0)
+        // Special handling for the spine chain
+        if (parentCalibrationData.Count > 0)
         {
             Vector3 hd = head.CurrentDirection;
-            // Some are partial rotations which we can stack together to specify how much we should rotate.
             Quaternion headr = Quaternion.FromToRotation(head.initialDir, hd);
-            Quaternion twist = Quaternion.FromToRotation(hipsTwist.initialDir, 
-                Vector3.Slerp(hipsTwist.initialDir,hipsTwist.CurrentDirection,.25f));
+            Quaternion twist = Quaternion.FromToRotation(hipsTwist.initialDir,
+                Vector3.Slerp(hipsTwist.initialDir, hipsTwist.CurrentDirection, 0.25f));
             Quaternion updown = Quaternion.FromToRotation(spineUpDown.initialDir,
-                Vector3.Slerp(spineUpDown.initialDir, spineUpDown.CurrentDirection, .25f));
+                Vector3.Slerp(spineUpDown.initialDir, spineUpDown.CurrentDirection, 0.25f));
 
-            // Compute the final rotations.
+            // Apply the final rotations for the spine
             Quaternion h = updown * updown * updown * twist * twist;
             Quaternion s = h * twist * updown;
             Quaternion c = s * twist * twist;
             float speed = 10f;
+
+            // Ensure no excessive rotation
             hipsTwist.Tick(h * hipsTwist.initialRotation, speed);
             spineUpDown.Tick(s * spineUpDown.initialRotation, speed);
             chest.Tick(c * chest.initialRotation, speed);
             head.Tick(updown * twist * headr * head.initialRotation, speed);
 
-            // For additional responsiveness, we rotate the entire transform slightly based on the hips.
-            Vector3 d = Vector3.Slerp(hipsTwist.initialDir, hipsTwist.CurrentDirection, .25f);
-            d.y *= 0.5f;
-            Quaternion deltaRotTracked = Quaternion.FromToRotation(hipsTwist.initialDir, d);
-            targetRot= deltaRotTracked * initialRotation;
+            // Apply the overall body rotation
+            Vector3 direction = Vector3.Slerp(hipsTwist.initialDir, hipsTwist.CurrentDirection, 0.25f);
+            direction.y *= 0.5f;
+            Quaternion deltaRotTracked = Quaternion.FromToRotation(hipsTwist.initialDir, direction);
+            targetRot = deltaRotTracked * initialRotation;
+
+            // Smoothly transition the rotation
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, Time.deltaTime * speed);
-
         }
-
     }
-
 }
