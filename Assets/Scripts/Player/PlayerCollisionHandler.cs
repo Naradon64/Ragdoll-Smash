@@ -25,7 +25,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     private Vector3 boxOffset; // Store the relative offset between the hands and hold point
     private FixedJoint rightHandJoint;
     private FixedJoint leftHandJoint;
-    public Transform orientation;
+    public Transform modelOrientation;
     public GameObject playerRoot; // Assign the Player GameObject in the Inspector
     private WinMenu winMenu; // Reference to WinMenu
 
@@ -346,7 +346,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 
                 // Calculate direction and initial velocity
                 Vector3 direction = (targetPosition - startPosition).normalized;
-                float initialSpeed = throwForce.magnitude * 1.0f; // Adjust multiplier for speed
+                float initialSpeed = throwForce.magnitude * 4.0f; // Adjust multiplier for speed
 
                 // Set initial velocity
                 rb.linearVelocity = direction * initialSpeed;
@@ -356,7 +356,7 @@ public class PlayerCollisionHandler : MonoBehaviour
             else
             {
                 // If no enemy, just throw forward (as before)
-                rb.AddForce(transform.forward * throwForce.magnitude * 1.0f, ForceMode.Impulse);
+                rb.AddForce(transform.forward * throwForce.magnitude * 2.0f, ForceMode.Impulse);
             }
 
             Collider[] itemColliders = heldItem.GetComponentsInChildren<Collider>();
@@ -394,19 +394,17 @@ public class PlayerCollisionHandler : MonoBehaviour
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         float maxAngle = 45f; // Max angle to consider (only in front of the player)
-
-        // Ensure the orientation is updating based on movement
-        Vector3 forwardDirection = orientation.forward; // Use orientation.forward to align with player rotation
+        float maxDistance = 20f; // Max distance to consider (adjust as needed)
 
         foreach (GameObject enemy in enemies)
         {
-            Vector3 directionToEnemy = (enemy.transform.position - transform.position).normalized;
-            float angle = Vector3.Angle(transform.forward, directionToEnemy); // Angle between forward and enemy
+            Vector3 directionToEnemy = (enemy.transform.position - modelOrientation.position).normalized;
+            float angle = Vector3.Angle(modelOrientation.forward, directionToEnemy); // Angle between forward and enemy
 
             if (angle < maxAngle) // Only consider enemies within 45 degrees in front
             {
-                float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                if (distance < closestDistance)
+                float distance = Vector3.Distance(modelOrientation.position, enemy.transform.position);
+                if (distance < closestDistance && distance <= maxDistance) // Check against maxDistance
                 {
                     closestDistance = distance;
                     closestEnemy = enemy.transform;

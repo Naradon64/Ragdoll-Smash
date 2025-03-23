@@ -44,7 +44,7 @@ public class PlayerAction : MonoBehaviour
             prevLeftArmPos = leftArm.position;
 
             // Debug: Log arm velocities
-            Debug.Log($"<size=30>Right Arm Velocity: {rightArmVelocity.magnitude}, Left Arm Velocity: {leftArmVelocity.magnitude}</size>");
+            // Debug.Log($"<size=30>Right Arm Velocity: {rightArmVelocity.magnitude}, Left Arm Velocity: {leftArmVelocity.magnitude}</size>");
 
             // Check if velocity exceeds the threshold and if the arm is swinging downward
             if (heldItem != null && heldItem.CompareTag("Throwable"))
