@@ -3773,6 +3773,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   orientation: {fileID: 1838242763}
+  model: {fileID: 0}
 --- !u!1 &912401211
 GameObject:
   m_ObjectHideFlags: 0
@@ -4564,6 +4565,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1534318418}
+  healthBar: {fileID: 0}
+  lockEnemyText: {fileID: 0}
   cursorLocked: 1
 --- !u!4 &1300306681
 Transform:

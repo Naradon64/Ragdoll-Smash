@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Ragdoll Smash/Scenes/Main Menu.unity
     guid: bcbaf1bf51c75ad42b37dffc97f9ba62
   - enabled: 1
-    path: Assets/Ragdoll Smash/Scenes/Avatar Character and Terrain.unity
+    path: Assets/Ragdoll Smash/Scenes/Demo Map.unity
     guid: 21565bfdc824ca84ca194cf328b54df3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: cc6d2f644e32df04a8c11eac16196a4e, type: 3}
