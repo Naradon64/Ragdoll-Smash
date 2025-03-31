@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using FIMSpace.FProceduralAnimation;
+using System.Collections;
 public class EnemyHealth2 : MonoBehaviour
 {
     public float maxHealth = 100f;
@@ -59,16 +60,23 @@ public class EnemyHealth2 : MonoBehaviour
         // Notify the UI to update
         OnHealthChanged?.Invoke(currentHealth);
 
-        // Apply knockback if health is greater than 0
-        if (currentHealth > 0)
+        // Apply knockback force
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            // Apply knockback through Enemy_AI2
-            if (enemyAI != null)
-            {
-                enemyAI.ApplyKnockback(damageDirection.normalized * 5f); // Adjust knockback force as needed
-            }
+            float upwardForce = 5f;   // Upward force
+            float forwardForce = 100f;  // Forward push force
+            float pushDelay = 0.1f;    // Delay between up and push
+
+            // Step 1: Add upward force
+            Vector3 upwardDirection = Vector3.up * upwardForce;
+            rb.AddForce(upwardDirection, ForceMode.Impulse);
+
+            // Start coroutine to add the push force after a delay
+            StartCoroutine(AddPushForce(rb, forwardForce, pushDelay));
         }
-        else
+
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -78,6 +86,16 @@ public class EnemyHealth2 : MonoBehaviour
         {
             UpdateHealthText();
         }
+    }
+
+    // Coroutine to add the push force with delay
+    private IEnumerator AddPushForce(Rigidbody rb, float forwardForce, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Step 2: Add push force (backward/forward)
+        Vector3 pushDirection = -transform.forward * forwardForce;
+        rb.AddForce(pushDirection, ForceMode.Impulse);
     }
 
     void Die()

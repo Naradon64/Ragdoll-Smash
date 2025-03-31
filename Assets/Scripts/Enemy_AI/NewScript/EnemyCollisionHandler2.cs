@@ -47,7 +47,7 @@ public class EnemyCollisionHandler2 : MonoBehaviour
     private void ApplyDamage(Transform damageSource)
     {
         // Calculate the damage direction (from the enemy to the player/throwable)
-        Vector3 damageDirection = transform.position - damageSource.position;
+        Vector3 damageDirection = (transform.position - damageSource.position).normalized;
 
         // Call TakeDamage with the damage and direction
         enemyHealth?.TakeDamage(damageAmount, damageDirection);
