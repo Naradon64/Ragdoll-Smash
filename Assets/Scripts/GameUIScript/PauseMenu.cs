@@ -5,6 +5,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject healthBar;
+    public GameObject chargeBar;
     public GameObject lockEnemyText;
     public static bool isPaused;
     public bool cursorLocked = true; // Track cursor lock state
@@ -38,6 +39,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(true);
         healthBar.SetActive(false);
+        chargeBar.SetActive(false);
         lockEnemyText.SetActive(false);
         Time.timeScale = 0f;
         isPaused = true;
@@ -50,6 +52,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         healthBar.SetActive(true);
+        chargeBar.SetActive(true);
         lockEnemyText.SetActive(true);
         Time.timeScale = 1f;
         isPaused = false;        
@@ -63,6 +66,7 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(1); // scene from project profile
         pauseMenu.SetActive(false);
         healthBar.SetActive(true);
+        chargeBar.SetActive(true);
         lockEnemyText.SetActive(true);
         Time.timeScale = 1f;
         isPaused = false;

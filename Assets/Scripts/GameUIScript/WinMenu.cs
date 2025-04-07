@@ -5,6 +5,7 @@ public class WinMenu : MonoBehaviour
 {
     public GameObject winMenu;
     public GameObject healthBar;
+    public GameObject chargeBar;
     public GameObject lockEnemyText;
     public static bool isDie;
     public bool cursorLocked = true; // Track cursor lock state
@@ -25,6 +26,7 @@ public class WinMenu : MonoBehaviour
     {
         winMenu.SetActive(true);
         healthBar.SetActive(false);
+        chargeBar.SetActive(false);
         lockEnemyText.SetActive(false);
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None; // Unlock cursor
@@ -37,6 +39,7 @@ public class WinMenu : MonoBehaviour
         SceneManager.LoadSceneAsync(1); // scene from project profile
         winMenu.SetActive(false);
         healthBar.SetActive(true);
+        chargeBar.SetActive(true);
         lockEnemyText.SetActive(true);
         Time.timeScale = 1f;
         isDie = false;

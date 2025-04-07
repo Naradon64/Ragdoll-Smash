@@ -6337,7 +6337,7 @@ MonoBehaviour:
   rightHand: {fileID: 1160109614415586670}
   leftHand: {fileID: 4953046876503954826}
   lockedEnemyText: {fileID: 0}
-  orientation: {fileID: 8256285045465818204}
+  modelOrientation: {fileID: 426299270427968577}
   playerRoot: {fileID: 3782066897193668758}
 --- !u!114 &8004567151847325371
 MonoBehaviour:
@@ -6369,7 +6369,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightArm: {fileID: 8988374769408172055}
   leftArm: {fileID: 7631244811216387086}
-  ballStartPosition: {x: 11.67, y: -17.67, z: -15.22}
+  ballStartPosition: {x: 102.05, y: 30.12, z: 75.34}
+  chest: {fileID: 2241356993949710910}
+  chargeSlider: {fileID: 0}
+  maxChargeTime: 2
+  chargingMessageText: {fileID: 0}
+  healedMessageText: {fileID: 0}
 --- !u!1 &3789197149736055264
 GameObject:
   m_ObjectHideFlags: 0
@@ -11813,6 +11818,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5589707052715078103, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+--- !u!4 &2241356993949710910 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2124251927034648980, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+  m_PrefabInstance: {fileID: 171204478742258602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2919723426173579967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3090821109635158293, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
