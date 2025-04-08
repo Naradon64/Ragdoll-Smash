@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1505242174179121017
+--- !u!1 &7215066736216359772
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1544154370938746199}
-  - component: {fileID: 2292098752212811508}
-  - component: {fileID: 3590630611835875812}
-  - component: {fileID: 2047483612030379800}
+  - component: {fileID: 1810904096440119711}
+  - component: {fileID: 5894376456114071495}
+  - component: {fileID: 3321289042090829781}
+  - component: {fileID: 1890621933443903319}
+  - component: {fileID: 7434975347630690163}
   m_Layer: 0
-  m_Name: Banner
+  m_Name: Plank4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1544154370938746199
+--- !u!4 &1810904096440119711
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505242174179121017}
+  m_GameObject: {fileID: 7215066736216359772}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.30362564, z: 0, w: 0.95279145}
-  m_LocalPosition: {x: 76.88, y: 24.67, z: 30.66}
-  m_LocalScale: {x: 3.6721, y: 3.2022, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -35.351, z: 0}
---- !u!33 &2292098752212811508
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &5894376456114071495
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505242174179121017}
-  m_Mesh: {fileID: 4300000, guid: d7113c6e2a0f65c4abdb33666078052f, type: 3}
---- !u!23 &3590630611835875812
+  m_GameObject: {fileID: 7215066736216359772}
+  m_Mesh: {fileID: 2924546418927585662, guid: 13fc7f249670a8849a55bf6db0abec2f, type: 3}
+--- !u!23 &3321289042090829781
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505242174179121017}
+  m_GameObject: {fileID: 7215066736216359772}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -59,13 +60,10 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 58d53420af384224ea4cfee8973d18cb, type: 2}
+  - {fileID: 2100000, guid: 4c80165dc0d49094c9dbc8f50539580d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,14 +85,14 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2047483612030379800
+--- !u!64 &1890621933443903319
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505242174179121017}
-  m_Material: {fileID: 0}
+  m_GameObject: {fileID: 7215066736216359772}
+  m_Material: {fileID: 13400000, guid: dbe2fc50374f5e148bfa19664b14f704, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -106,6 +104,33 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: d7113c6e2a0f65c4abdb33666078052f, type: 3}
+  m_Mesh: {fileID: -4875062567268260438, guid: 13fc7f249670a8849a55bf6db0abec2f, type: 3}
+--- !u!54 &7434975347630690163
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7215066736216359772}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1

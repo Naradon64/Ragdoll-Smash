@@ -64,8 +64,8 @@ public class EnemyHealth2 : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            float upwardForce = 5f;   // Upward force
-            float forwardForce = 100f;  // Forward push force
+            float upwardForce = 100f;   // Upward force
+            float forwardForce = 200f;  // Forward push force
             float pushDelay = 0.1f;    // Delay between up and push
 
             // Step 1: Add upward force

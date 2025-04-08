@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyCollisionHandler2 : MonoBehaviour
 {
-    public float damageAmount = 20f; // Damage the enemy takes per hit
+    public float damageAmount = 40f; // Damage the enemy takes per hit
     private float damageCooldown = 2f; // Cooldown time to prevent rapid hits
     private float currentCooldown = 0f; // Timer for cooldown
     private EnemyHealth2 enemyHealth; // Reference to EnemyHealth2 component

@@ -141,9 +141,9 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
 
         // Reduce mass and add damping to prevent strong collisions
-        rb.mass = 0.5f;  // Adjust as needed
-        rb.linearDamping = 5f;  // Reduces sudden movement
-        rb.angularDamping = 5f;  // Reduces unwanted rotation
+        rb.mass = 0.5f;
+        rb.linearDamping = 5f;
+        rb.angularDamping = 5f;
         rb.isKinematic = false;
         rb.useGravity = true;
 
@@ -160,13 +160,24 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
 
         heldItem = box;
+        playerAction.SetHeldItem(heldItem);
         boxPickedUp = true;
-
-        // Start cooldown after picking up the item
         currentCooldown = pickupCooldown;
+
+        boxCollider = box.GetComponent<Collider>();
+
+        // Ignore collision between the player and the item
+        Collider[] itemColliders = boxCollider.GetComponentsInChildren<Collider>();
+        foreach (Collider itemCollider in itemColliders)
+        {
+            foreach (Collider playerCollider in playerColliders)
+            {
+                Physics.IgnoreCollision(playerCollider, itemCollider, true);
+            }
+        }
     }
 
-   private void ReleaseBox()
+    private void ReleaseBox()
     {
         Debug.Log("ReleaseBox: Releasing box.");
 
@@ -181,7 +192,6 @@ public class PlayerCollisionHandler : MonoBehaviour
             leftHandJoint = null;
         }
 
-        // Remove Rigidbody from hands if it exists
         Rigidbody rightHandRb = rightHand.GetComponent<Rigidbody>();
         if (rightHandRb != null)
         {
@@ -194,47 +204,41 @@ public class PlayerCollisionHandler : MonoBehaviour
             Destroy(leftHandRb);
         }
 
-        boxPickedUp = false;
-        heldItem = null;
-
         rightHandInsideBox = false;
         leftHandInsideBox = false;
 
-        playerAction.SetHeldItem(null);
+        
 
         if (boxCollider != null)
         {
             Rigidbody rb = boxCollider.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                rb.mass = 1f;  // Restore default mass
+                rb.mass = 4f;
                 rb.linearDamping = 0f;
                 rb.angularDamping = 0.05f;
                 rb.isKinematic = false;
                 rb.useGravity = true;
             }
+
+            // Re-enable collisions before clearing heldItem
+            Collider[] itemColliders = boxCollider.GetComponentsInChildren<Collider>();
+            foreach (Collider itemCollider in itemColliders)
+            {
+                foreach (Collider playerCollider in playerColliders)
+                {
+                    Physics.IgnoreCollision(playerCollider, itemCollider, false);
+                }
+            }
         }
 
-        if (boxCollider != null)
-        {
-            StartCoroutine(ReEnableBoxCollisions(boxCollider, 0.1f));
-        }
+        boxPickedUp = false;
+        heldItem = null;
         boxCollider = null;
 
+        playerAction.SetHeldItem(null);
+
         Debug.Log($"ReleaseBox: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}, boxCollider = {boxCollider}");
-    }
-
-    private IEnumerator ReEnableBoxCollisions(Collider boxCollider, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        // Re-enable collisions between the player and the box
-        Collider[] playerColliders = GetComponentsInChildren<Collider>();
-        foreach (Collider playerCollider in playerColliders)
-        {
-            Physics.IgnoreCollision(playerCollider, boxCollider, false);
-        }
-        Debug.Log("Re-enabled box collisions with player.");
     }
 
     private void PickupItem(GameObject item, Transform hand)
@@ -394,7 +398,7 @@ public class PlayerCollisionHandler : MonoBehaviour
         Transform closestEnemy = null;
         float closestDistance = Mathf.Infinity;
         float maxAngle = 45f; // Max angle to consider (only in front of the player)
-        float maxDistance = 20f; // Max distance to consider (adjust as needed)
+        float maxDistance = 40f; // Max distance to consider (adjust as needed)
 
         foreach (GameObject enemy in enemies)
         {
