@@ -32,8 +32,10 @@ public class PlayerAction : MonoBehaviour
     private float chargeAmount = 0f;
     private bool isCharging = false;
     private PlayerHealth playerHealth;
-    [SerializeField] private TextMeshProUGUI chargingMessageText;  // Text for "Charging..."
-    [SerializeField] private TextMeshProUGUI healedMessageText;    // Text for "Charged!" and "Healed" // Drag the UI text here in the Inspector
+    
+    [SerializeField] private GameObject chargingMessageText; 
+    [SerializeField] private GameObject healedMessageText;  
+
     private Coroutine messageCoroutine;
 
     private void Start()
@@ -50,6 +52,21 @@ public class PlayerAction : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            int healAmount = Random.Range(10, 30); // Sample heal value for testing
+            print("SKIBIDI");
+
+            // Show messages
+            ShowHealedMessage("awdawd");
+            ShowChargingMessage("Charged!", new Color(1f, 0.85f, 0.3f));
+
+            // Hide after delay
+            StartCoroutine(HideHealedMessageWithDelay(1f));
+            StartCoroutine(HideChargedMessageWithDelay(1f));
+        }
+
+
         // Calculate velocities
         if (rightArm != null && leftArm != null)
         {
@@ -90,6 +107,7 @@ public class PlayerAction : MonoBehaviour
             }
         }
 
+
         HandleCharging();
 
         // Check if 5 seconds have passed since the ball was picked up and regenerate the ball
@@ -98,6 +116,7 @@ public class PlayerAction : MonoBehaviour
             GenerateNewBall();
             ballPickedUp = false;  // Reset flag after regenerating the ball
         }
+
     }
 
     // When an item is picked up
@@ -175,13 +194,13 @@ public class PlayerAction : MonoBehaviour
             {
                 playerHealth.Heal(healAmount);
                 Debug.Log($"<color=cyan>Healed for {healAmount} HP!</color>");
-                ShowHealedMessage($"Healed for {healAmount} HP!");
+                ShowHealedMessage($"Healed for {healAmount} HP!", Color.red);
                 // Reset the charging state after a brief delay
                 StartCoroutine(HideHealedMessageWithDelay(1f));  // 1-second delay for "Charge canceled!"
             }
             else
             {
-                ShowHealedMessage("Charged!");
+                ShowHealedMessage("Charged!", new Color(1f, 0.85f, 0.3f));
                 // Reset the charging state after a brief delay
                 StartCoroutine(HideHealedMessageWithDelay(1f));  // 1-second delay for "Charge canceled!"
             }
@@ -190,21 +209,28 @@ public class PlayerAction : MonoBehaviour
         }
     }
 
-    private void ShowChargingMessage(string message)
+    private void ShowChargingMessage(string message, Color? color = null)
     {
         if (chargingMessageText == null) return;
 
-        chargingMessageText.text = message;
-        chargingMessageText.gameObject.SetActive(true);
+        TMP_Text textComponent = chargingMessageText.transform.Find("Text")?.GetComponent<TMP_Text>();
+        if (textComponent == null) return;
+
+        textComponent.text = message;
+        textComponent.color = color ?? Color.white; // Use provided color or default to white
+        chargingMessageText.SetActive(true);
     }
 
-    private void ShowHealedMessage(string message)
+    private void ShowHealedMessage(string message, Color? color = null)
     {
         if (healedMessageText == null) return;
 
-        // Show healed message and hide the charging message
-        healedMessageText.text = message;
-        healedMessageText.gameObject.SetActive(true);
+        TMP_Text textComponent = healedMessageText.transform.Find("Text")?.GetComponent<TMP_Text>();
+        if (textComponent == null) return;
+
+        textComponent.text = message;
+        textComponent.color = color ?? Color.white; // Use provided color or default to white
+        healedMessageText.SetActive(true);
     }
 
     private IEnumerator HideChargedMessageWithDelay(float delayTime)
