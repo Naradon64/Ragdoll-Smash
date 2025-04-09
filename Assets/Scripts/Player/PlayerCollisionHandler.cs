@@ -221,15 +221,8 @@ public class PlayerCollisionHandler : MonoBehaviour
                 rb.useGravity = true;
             }
 
-            // Re-enable collisions before clearing heldItem
-            Collider[] itemColliders = boxCollider.GetComponentsInChildren<Collider>();
-            foreach (Collider itemCollider in itemColliders)
-            {
-                foreach (Collider playerCollider in playerColliders)
-                {
-                    Physics.IgnoreCollision(playerCollider, itemCollider, false);
-                }
-            }
+            // Start coroutine to re-enable collision after delay
+            StartCoroutine(ReenableCollisionWithDelay(boxCollider, 0.5f)); // 0.5s delay (adjust as needed)
         }
 
         boxPickedUp = false;
@@ -239,6 +232,22 @@ public class PlayerCollisionHandler : MonoBehaviour
         playerAction.SetHeldItem(null);
 
         Debug.Log($"ReleaseBox: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}, boxCollider = {boxCollider}");
+    }
+
+    private IEnumerator ReenableCollisionWithDelay(Collider boxCollider, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        Collider[] itemColliders = boxCollider.GetComponentsInChildren<Collider>();
+        foreach (Collider itemCollider in itemColliders)
+        {
+            foreach (Collider playerCollider in playerColliders)
+            {
+                Physics.IgnoreCollision(playerCollider, itemCollider, false);
+            }
+        }
+
+        Debug.Log("Re-enabled collision after delay.");
     }
 
     private void PickupItem(GameObject item, Transform hand)
@@ -347,13 +356,17 @@ public class PlayerCollisionHandler : MonoBehaviour
             {
                 Vector3 targetPosition = targetEnemy.position;
                 Vector3 startPosition = heldItem.transform.position;
-
-                // Calculate direction and initial velocity
+                // Force the item to move directly toward the enemy, no physics nonsense
                 Vector3 direction = (targetPosition - startPosition).normalized;
-                float initialSpeed = throwForce.magnitude * 4.0f; // Adjust multiplier for speed
+                float speed = 50f; // You can tune this to control how fast the ball hits the enemy
 
-                // Set initial velocity
-                rb.linearVelocity = direction * initialSpeed;
+                rb.linearVelocity = direction * speed;
+
+                // Optional: freeze rotation to make it fly straight
+                rb.freezeRotation = true;
+
+                // Optional: disable gravity so it flies perfectly
+                rb.useGravity = false;
 
                 // Apply gravity (Rigidbody already has useGravity = true)
             }

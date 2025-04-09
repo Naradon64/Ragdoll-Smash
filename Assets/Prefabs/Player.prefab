@@ -6370,7 +6370,7 @@ MonoBehaviour:
   rightArm: {fileID: 8988374769408172055}
   leftArm: {fileID: 7631244811216387086}
   ballStartPosition: {x: 102.05, y: 30.12, z: 75.34}
-  chest: {fileID: 2241356993949710910}
+  chest: {fileID: 849450143768768997}
   chargeSlider: {fileID: 0}
   maxChargeTime: 2
   chargingMessageText: {fileID: 0}
@@ -11630,6 +11630,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8555912071393339853, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+--- !u!4 &849450143768768997 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8527029370284502449, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+  m_PrefabInstance: {fileID: 171204478742258602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &911359832924188370 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8158849753222607496, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
@@ -11818,11 +11823,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5589707052715078103, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
---- !u!4 &2241356993949710910 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2124251927034648980, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
-  m_PrefabInstance: {fileID: 171204478742258602}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2919723426173579967 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3090821109635158293, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}

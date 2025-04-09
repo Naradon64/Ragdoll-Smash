@@ -77,13 +77,18 @@ public class PlayerAction : MonoBehaviour
             prevRightArmPos = rightArm.position;
             prevLeftArmPos = leftArm.position;
 
-            // Debug: Log arm velocities
-            // Debug.Log($"<size=30>Right Arm Velocity: {rightArmVelocity.magnitude}, Left Arm Velocity: {leftArmVelocity.magnitude}</size>");
+            // Check if arms are raised above chest
+            bool isRightArmRaised = rightArm.position.y > chest.position.y + 0.20f;
+            bool isLeftArmRaised = leftArm.position.y > chest.position.y + 0.20f;
+
+            // Debug log arm states
+            Debug.Log($"<size=20>RightArmY: {rightArm.position.y:F2}, ChestY: {chest.position.y:F2}, Raised: {isRightArmRaised}</size>");
+            Debug.Log($"<size=20>LeftArmY: {leftArm.position.y:F2}, ChestY: {chest.position.y:F2}, Raised: {isLeftArmRaised}</size>");
 
             // Check if velocity exceeds the threshold and if the arm is swinging downward
             if (heldItem != null && heldItem.CompareTag("Throwable"))
             {
-                // Check if enough time has passed since the last throw
+                // Check cooldown
                 if (Time.time - lastThrowTime < cooldownTime)
                 {
                     Debug.Log("Cooldown active, throw not allowed yet.");
@@ -91,18 +96,19 @@ public class PlayerAction : MonoBehaviour
                 }
 
                 // Right arm throw detection
-                if (rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.4f)
+                if (isRightArmRaised && rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.4f)
                 {
-                    Debug.Log($"Right arm swung down fast: {rightArmVelocity}, throwing item.");
+                    Debug.Log($"<size=20>Right arm ready & swinging down: THROW!</size>");
                     playerCollisionHandler.ThrowItem(rightArmVelocity);
-                    lastThrowTime = Time.time; // Update last throw time
+                    lastThrowTime = Time.time;
                 }
+
                 // Left arm throw detection
-                else if (leftArmVelocity.magnitude > velocityThreshold && leftArmVelocity.y < -0.4f)
+                else if (isLeftArmRaised && leftArmVelocity.magnitude > velocityThreshold && leftArmVelocity.y < -0.4f)
                 {
-                    Debug.Log($"Left arm swung down fast: {leftArmVelocity}, throwing item.");
+                    Debug.Log($"<size=20>Left arm ready & swinging down: THROW!</size>");
                     playerCollisionHandler.ThrowItem(leftArmVelocity);
-                    lastThrowTime = Time.time; // Update last throw time
+                    lastThrowTime = Time.time;
                 }
             }
         }
