@@ -32,6 +32,8 @@ public class PlayerAction : MonoBehaviour
     private float chargeAmount = 0f;
     private bool isCharging = false;
     private PlayerHealth playerHealth;
+
+    [SerializeField] private Transform model;
     
     [SerializeField] private GameObject chargingMessageText; 
     [SerializeField] private GameObject healedMessageText;  
@@ -78,12 +80,12 @@ public class PlayerAction : MonoBehaviour
             prevLeftArmPos = leftArm.position;
 
             // Check if arms are raised above chest
-            bool isRightArmRaised = rightArm.position.y > chest.position.y + 0.20f;
-            bool isLeftArmRaised = leftArm.position.y > chest.position.y + 0.20f;
+            bool isRightArmRaised = rightArm.position.y > chest.position.y + 0.15f;
+            bool isLeftArmRaised = leftArm.position.y > chest.position.y + 0.15f;
 
             // Debug log arm states
             Debug.Log($"<size=20>RightArmY: {rightArm.position.y:F2}, ChestY: {chest.position.y:F2}, Raised: {isRightArmRaised}</size>");
-            Debug.Log($"<size=20>LeftArmY: {leftArm.position.y:F2}, ChestY: {chest.position.y:F2}, Raised: {isLeftArmRaised}</size>");
+            // Debug.Log($"<size=20>LeftArmY: {leftArm.position.y:F2}, ChestY: {chest.position.y:F2}, Raised: {isLeftArmRaised}</size>");
 
             // Check if velocity exceeds the threshold and if the arm is swinging downward
             if (heldItem != null && heldItem.CompareTag("Throwable"))
@@ -95,18 +97,30 @@ public class PlayerAction : MonoBehaviour
                     return;
                 }
 
-                // Right arm throw detection
-                if (isRightArmRaised && rightArmVelocity.magnitude > velocityThreshold && rightArmVelocity.y < -0.4f)
+                // Check forward swing direction using dot product
+                Vector3 forwardDir = model.forward;
+
+                bool isRightSwingingForward = Vector3.Dot(rightArmVelocity.normalized, forwardDir) > 0.5f;
+                bool isLeftSwingingForward = Vector3.Dot(leftArmVelocity.normalized, forwardDir) > 0.5f;
+
+                // Right arm throw
+                if (isRightArmRaised &&
+                    rightArmVelocity.magnitude > velocityThreshold &&
+                    rightArmVelocity.y < -0.2f && // slight downward motion
+                    isRightSwingingForward)
                 {
-                    Debug.Log($"<size=20>Right arm ready & swinging down: THROW!</size>");
+                    Debug.Log($"<size=20>Right arm ready & swinging forward/down: THROW!</size>");
                     playerCollisionHandler.ThrowItem(rightArmVelocity);
                     lastThrowTime = Time.time;
                 }
-
-                // Left arm throw detection
-                else if (isLeftArmRaised && leftArmVelocity.magnitude > velocityThreshold && leftArmVelocity.y < -0.4f)
+                // Left arm throw
+                else if (isLeftArmRaised &&
+                        leftArmVelocity.magnitude > velocityThreshold &&
+                        leftArmVelocity.y < -0.2f &&
+                        isLeftSwingingForward)
                 {
-                    Debug.Log($"<size=20>Left arm ready & swinging down: THROW!</size>");
+
+                    Debug.Log($"<size=20>Left arm ready & swinging forward/down: THROW!</size>");
                     playerCollisionHandler.ThrowItem(leftArmVelocity);
                     lastThrowTime = Time.time;
                 }

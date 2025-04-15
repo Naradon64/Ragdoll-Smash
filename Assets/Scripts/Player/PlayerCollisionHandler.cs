@@ -145,7 +145,7 @@ public class PlayerCollisionHandler : MonoBehaviour
         rb.linearDamping = 5f;
         rb.angularDamping = 5f;
         rb.isKinematic = false;
-        rb.useGravity = true;
+        rb.useGravity = false;
 
         if (rightHandJoint == null)
         {
@@ -181,16 +181,10 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         Debug.Log("ReleaseBox: Releasing box.");
 
-        if (rightHandJoint != null)
-        {
-            Destroy(rightHandJoint);
-            rightHandJoint = null;
-        }
-        if (leftHandJoint != null)
-        {
-            Destroy(leftHandJoint);
-            leftHandJoint = null;
-        }
+        if (rightHandJoint != null) Destroy(rightHandJoint);
+        if (leftHandJoint != null) Destroy(leftHandJoint);
+        rightHandJoint = null;
+        leftHandJoint = null;
 
         Rigidbody rightHandRb = rightHand.GetComponent<Rigidbody>();
         if (rightHandRb != null)
@@ -207,22 +201,29 @@ public class PlayerCollisionHandler : MonoBehaviour
         rightHandInsideBox = false;
         leftHandInsideBox = false;
 
-        
-
         if (boxCollider != null)
         {
             Rigidbody rb = boxCollider.GetComponent<Rigidbody>();
             if (rb != null)
             {
+                // Zero out movement to prevent flying
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+
+                // Reset physics
                 rb.mass = 4f;
                 rb.linearDamping = 0f;
                 rb.angularDamping = 0.05f;
                 rb.isKinematic = false;
                 rb.useGravity = true;
+
+                // Freeze temporarily for stability
+                rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+                StartCoroutine(UnfreezeRotation(rb, 1f));
             }
 
-            // Start coroutine to re-enable collision after delay
-            StartCoroutine(ReenableCollisionWithDelay(boxCollider, 0.5f)); // 0.5s delay (adjust as needed)
+            // Re-enable collision with player after short delay
+            StartCoroutine(ReenableCollisionWithDelay(boxCollider, 1.0f));
         }
 
         boxPickedUp = false;
@@ -230,8 +231,6 @@ public class PlayerCollisionHandler : MonoBehaviour
         boxCollider = null;
 
         playerAction.SetHeldItem(null);
-
-        Debug.Log($"ReleaseBox: rightHandInsideBox = {rightHandInsideBox}, leftHandInsideBox = {leftHandInsideBox}, boxCollider = {boxCollider}");
     }
 
     private IEnumerator ReenableCollisionWithDelay(Collider boxCollider, float delay)
@@ -248,6 +247,12 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
 
         Debug.Log("Re-enabled collision after delay.");
+    }
+
+    private IEnumerator UnfreezeRotation(Rigidbody rb, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        rb.constraints = RigidbodyConstraints.None;
     }
 
     private void PickupItem(GameObject item, Transform hand)
